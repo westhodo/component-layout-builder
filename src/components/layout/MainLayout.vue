@@ -9,38 +9,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useDraggable } from 'vue-draggable-plus';
+import { ref } from 'vue'
+import { useDraggable } from 'vue-draggable-plus'
 
-const emit = defineEmits(['show-lnb']);
+const emit = defineEmits(['show-lnb'])
 
-const el = ref();
+const el = ref()
 const list = ref([
   {
     name: 'Joao',
-    id: 1,
+    id: 1
   },
   {
     name: 'Jean',
-    id: 2,
+    id: 2
   },
   {
     name: 'Johanna',
-    id: 3,
+    id: 3
   },
   {
     name: 'Juan',
-    id: 4,
-  },
-]);
+    id: 4
+  }
+])
 
 useDraggable(el, list, {
   animation: 150,
   onStart() {
-    console.log('start');
+    console.log('start')
   },
   onUpdate() {
-    console.log('update');
-  },
-});
+    console.log('update')
+  }
+})
 </script>

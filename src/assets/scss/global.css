@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
+@import 'vue-easy-dnd/dist/dnd.css';
 
 @font-face {
   font-family: 'Pretendard Variable';
