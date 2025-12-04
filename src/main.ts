@@ -1,4 +1,4 @@
-import '@/assets/scss/common.scss';
+import '@/assets/scss/global.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
@@ -8,8 +8,11 @@ import router from './router';
 
 import PrimeVue from 'primevue/config';
 import { ThemePreset } from '@/style';
+import { Icon } from '@iconify/vue';
 
 const app = createApp(App);
+
+app.component('AppIcon', Icon);
 
 app.use(PrimeVue, {
   theme: {
@@ -19,8 +22,6 @@ app.use(PrimeVue, {
     },
   },
 });
-
 app.use(createPinia());
 app.use(router);
-
 app.mount('#app');
