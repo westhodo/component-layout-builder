@@ -11,9 +11,17 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Button: typeof import('primevue/button')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
+    Dialog: typeof import('primevue/dialog')['default']
+    Drawer: typeof import('primevue/drawer')['default']
+    DrawerDialog: typeof import('./src/components/typeSelct/DrawerDialog.vue')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     LnbLayout: typeof import('./src/components/layout/LnbLayout.vue')['default']
     MainLayout: typeof import('./src/components/layout/MainLayout.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TestElement: typeof import('./src/components/layout/test-element.vue')['default']
   }
 }
