@@ -93,13 +93,17 @@
             v-if="item.enter"
             outlined
             icon="pi pi-pen-to-square"
-            @click="handleClick(item)"
+            @click="(e) => handleClick(e, item)"
           />
         </div>
       </GridItem>
     </GridLayout>
   </div>
-  <DrawerDialog :visible="isVisible" />
+  <DrawerDialog
+    v-model:visible="isVisible"
+    @selected="handleSelectedType"
+    @onSelect="onSelect"
+  />
   <!-- <Dialog
     v-model:visible="isVisible"
     header="Type 선택"
@@ -115,9 +119,11 @@ import TestElement from './test-element.vue'
 import { getDocumentDir, setDocumentDir } from './dom'
 import { layout } from '@/constants/layout'
 import DrawerDialog from '../typeSelct/DrawerDialog.vue'
-const isEnter = ref(false)
+// const isEnter = ref(false)
 const isVisible = ref(false)
 const isCurrentEdit = ref(false)
+const selectedNode = ref(null)
+const selectedEl = ref(null)
 
 const state = reactive({
   layout: JSON.parse(JSON.stringify(layout)),
@@ -152,9 +158,11 @@ const handlwCurrentEdit = () => {
 // function clicked()  {
 //   window.alert("CLICK!");
 // }
-const handleClick = (node) => {
-  console.log('click', node)
+const handleClick = (e, node) => {
+  console.log('click', e)
   node.edit = !node.edit
+  selectedNode.value = node
+  selectedEl.value = e
   isVisible.value = true
 }
 function increaseWidth() {
@@ -295,6 +303,24 @@ const hanldeMouseEnter = (node) => {
 
 const handleMouseLeave = (node) => {
   node.enter = false
+}
+
+const handleSelectedType = (e, node) => {
+  // console.log(e, node, 'node')
+  // isVisible.value = false
+}
+
+const onSelect = (e: { files: any[] }) => {
+  const file = e.files[0]
+
+  state.layout.forEach((item) => {
+    if (item.i === selectedNode.value.i) {
+      item.path = URL.createObjectURL(file)
+      item.type = 'image'
+    }
+  })
+
+  isVisible.value = false
 }
 </script>
 <style scoped></style>
