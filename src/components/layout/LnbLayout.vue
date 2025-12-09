@@ -1,13 +1,22 @@
 <template>
-  <nav class="fixed m-2 h-screen w-[200px] border">
-    <ul class="flex flex-wrap gap-1">
+  <nav class="fixed flex h-screen w-[400px] items-center justify-center">
+    <ul
+      class="h-[calc(100%-30px)] w-[calc(100%-30px)] overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-4 shadow-xl"
+    >
       <li
-        v-for="(item, index) in template"
+        v-for="(depth1, index) in component"
         :key="index"
-        class="flex w-[calc(50%-2px)] flex-col items-center justify-center p-4"
+        class="flex flex-wrap gap-2"
       >
-        <i :class="item.icon"></i>
-        <p>{{ item.label }}</p>
+        <p class="mt-3 w-full font-bold">{{ depth1.title }}</p>
+        <div
+          v-for="(depth2, index2) in depth1.children"
+          :key="index2"
+          class="flex w-[calc(50%-4px)] cursor-pointer items-center gap-2 rounded-2xl bg-gray-50 p-3 transition hover:bg-gray-100"
+        >
+          <AppIcon :icon="depth2.icon" width="16" height="16"></AppIcon>
+          <p class="text-sm">{{ depth2.label }}</p>
+        </div>
       </li>
     </ul>
   </nav>
@@ -20,29 +29,124 @@ import { ref } from 'vue'
 // }
 
 // const props = withDefaults(defineProps<Props>(), {
-//   show: false,
+//   show: false
 // });
 
-const template = ref([
+const component = ref([
   {
-    label: 'Text',
-    icon: 'pi pi-cog'
+    title: 'Form',
+    children: [
+      {
+        label: 'Checkbox',
+        icon: 'solar:check-circle-linear'
+      },
+      {
+        label: 'ColorPicker',
+        icon: 'solar:pallete-2-linear'
+      },
+      {
+        label: 'DatePicker',
+        icon: 'solar:calendar-date-linear'
+      },
+
+      {
+        label: 'InputOtp',
+        icon: 'solar:password-linear'
+      },
+      {
+        label: 'InputText',
+        icon: 'solar:text-bold-duotone'
+      },
+      {
+        label: 'Knob',
+        icon: 'solar:round-graph-linear'
+      },
+      {
+        label: 'Password',
+        icon: 'solar:lock-password-outline'
+      },
+      {
+        label: 'RadioButton',
+        icon: 'material-symbols:radio-button-checked'
+      },
+      {
+        label: 'Textarea',
+        icon: 'solar:text-field-outline'
+      },
+      {
+        label: 'ToggleSwitch',
+        icon: 'material-symbols:toggle-off-outline'
+      }
+    ]
   },
   {
-    label: 'Button',
-    icon: 'pi pi-cog'
+    title: 'Button',
+    children: [
+      {
+        label: 'Button',
+        icon: 'material-symbols:radio-button-partial'
+      }
+    ]
   },
   {
-    label: 'Text',
-    icon: 'pi pi-cog'
+    title: 'Data',
+    children: [
+      {
+        label: 'DataTable',
+        icon: 'material-symbols:table-outline-sharp'
+      },
+      {
+        label: 'Paginator',
+        icon: 'material-symbols:page-control'
+      },
+      {
+        label: 'Tree',
+        icon: 'material-symbols:account-tree-outline-rounded'
+      },
+      {
+        label: 'TreeTable',
+        icon: 'ic:outline-grid-on'
+      }
+    ]
   },
   {
-    label: 'Text',
-    icon: 'pi pi-cog'
+    title: 'Panel',
+    children: [
+      {
+        label: 'Accordion',
+        icon: 'material-symbols:keyboard-arrow-down-rounded'
+      },
+      {
+        label: 'Card',
+        icon: 'material-symbols:page-control'
+      },
+      {
+        label: 'Divider',
+        icon: 'material-symbols:account-tree-outline-rounded'
+      },
+      {
+        label: 'Tabs',
+        icon: 'ic:outline-grid-on'
+      }
+    ]
   },
   {
-    label: 'Text',
-    icon: 'pi pi-cog'
+    title: 'File',
+    children: [
+      {
+        label: 'FileUpload',
+        icon: 'material-symbols:keyboard-arrow-down-rounded'
+      }
+    ]
+  },
+  {
+    title: 'Menu',
+    children: [
+      {
+        label: 'Breadcrumb',
+        icon: 'material-symbols:keyboard-arrow-down-rounded'
+      }
+    ]
   }
 ])
 </script>

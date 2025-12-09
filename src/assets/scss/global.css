@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
-@import 'vue-easy-dnd/dist/dnd.css';
 
 @font-face {
   font-family: 'Pretendard Variable';
@@ -17,6 +16,6 @@
 
 html,
 body {
-  @apply dark:bg-surface-950 min-w-[1920px] bg-white;
+  @apply min-w-[1920px] text-[#333];
   font-family: 'Pretendard Variable', sans-serif;
 }
