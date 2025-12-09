@@ -11,8 +11,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppToolbar: typeof import('./src/components/layout/AppToolbar.vue')['default']
     Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
+    copy: typeof import('./src/components/layout/LnbLayout copy.vue')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Drawer: typeof import('primevue/drawer')['default']
     DrawerDialog: typeof import('./src/components/typeSelct/DrawerDialog.vue')['default']
@@ -23,5 +25,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TestElement: typeof import('./src/components/layout/test-element.vue')['default']
+    ToggleSwitch: typeof import('primevue/toggleswitch')['default']
+    Toolbar: typeof import('./src/components/layout/Toolbar.vue')['default']
   }
 }
