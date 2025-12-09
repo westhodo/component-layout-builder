@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="fixed bottom-0 left-[50%] translate-[-50%] rounded-2xl border border-gray-100 shadow"
+    class="fixed bottom-0 left-[50%] translate-[-50%] rounded-2xl border border-gray-100 bg-white shadow dark:border-gray-900 dark:bg-gray-900"
   >
     <ul class="inline-flex gap-2 p-2 px-4">
       <li

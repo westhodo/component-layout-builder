@@ -1,7 +1,7 @@
 <template>
-  <nav class="fixed flex h-screen w-[400px] items-center justify-center">
+  <nav class="fixed z-10 flex h-screen w-[400px] items-center justify-center">
     <ul
-      class="h-[calc(100%-30px)] w-[calc(100%-30px)] overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-4 shadow-xl"
+      class="h-[calc(100%-30px)] w-[calc(100%-30px)] overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-4 shadow-xl dark:bg-gray-900"
     >
       <li
         v-for="(depth1, index) in component"
@@ -12,7 +12,8 @@
         <div
           v-for="(depth2, index2) in depth1.children"
           :key="index2"
-          class="flex w-[calc(50%-4px)] cursor-pointer items-center gap-2 rounded-2xl bg-gray-50 p-3 transition hover:bg-gray-100"
+          class="flex w-[calc(50%-4px)] cursor-pointer items-center gap-2 rounded-2xl bg-gray-50 p-3 transition hover:bg-gray-100 dark:bg-gray-950"
+          @click="emit('select-menu', depth2)"
         >
           <AppIcon :icon="depth2.icon" width="16" height="16"></AppIcon>
           <p class="text-sm">{{ depth2.label }}</p>
@@ -24,15 +25,19 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// interface Props {
-//   show: boolean;
-// }
 
-// const props = withDefaults(defineProps<Props>(), {
-//   show: false
-// });
+const emit = defineEmits(['select-menu'])
 
 const component = ref([
+  {
+    title: 'Layout',
+    children: [
+      {
+        label: 'Layer',
+        icon: 'solar:layers-minimalistic-line-duotone'
+      }
+    ]
+  },
   {
     title: 'Form',
     children: [

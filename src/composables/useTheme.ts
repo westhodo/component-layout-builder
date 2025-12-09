@@ -1,38 +1,43 @@
-import { useLocalStorage, usePreferredDark } from '@vueuse/core';
-import { computed, onMounted } from 'vue';
+import { useLocalStorage, usePreferredDark } from '@vueuse/core'
+import { computed, onMounted } from 'vue'
 
-const storageKey = 'app-theme';
-const darkModeClass = 'app-theme-dark';
+const storageKey = 'app-theme'
+const darkModeClass = 'app-theme-dark'
 
 export function useTheme() {
-  const storage = useLocalStorage(storageKey, 'system');
-  const isDark = usePreferredDark();
+  const storage = useLocalStorage(storageKey, 'system')
+  const isDark = usePreferredDark()
   const theme = computed(() => {
-    return storage.value === 'system' ? (isDark.value ? 'dark' : 'light') : storage.value;
-  });
+    return storage.value === 'system'
+      ? isDark.value
+        ? 'dark'
+        : 'light'
+      : storage.value
+  })
 
   const applyTheme = () => {
-    const currentTheme = theme.value;
+    const currentTheme = theme.value
     if (currentTheme === 'dark') {
-      document.documentElement.classList.add(darkModeClass);
+      document.documentElement.classList.add(darkModeClass)
     } else {
-      document.documentElement.classList.remove(darkModeClass);
+      document.documentElement.classList.remove(darkModeClass)
     }
-  };
+  }
 
   const toggleTheme = () => {
-    const isCurrentlyDark = document.documentElement.classList.contains(darkModeClass);
-    const newTheme = isCurrentlyDark ? 'light' : 'dark';
-    storage.value = newTheme;
-    applyTheme();
-  };
+    const isCurrentlyDark =
+      document.documentElement.classList.contains(darkModeClass)
+    const newTheme = isCurrentlyDark ? 'light' : 'dark'
+    storage.value = newTheme
+    applyTheme()
+  }
 
   onMounted(() => {
-    applyTheme();
-  });
+    applyTheme()
+  })
 
   return {
     theme,
-    toggleTheme,
-  };
+    toggleTheme
+  }
 }

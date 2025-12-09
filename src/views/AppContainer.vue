@@ -1,6 +1,5 @@
 <template>
-  <div class="flex h-screen w-full gap-2 bg-gray-100">
-    <LnbLayout />
+  <div class="flex h-screen w-full">
     <MainLayout />
     <AppToolbar />
   </div>

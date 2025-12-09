@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
-@import 'primeicons/primeicons.css';
+
+@custom-variant dark (&:where(.app-theme-dark, .app-theme-dark *));
 
 @font-face {
   font-family: 'Pretendard Variable';
@@ -16,6 +17,6 @@
 
 html,
 body {
-  @apply min-w-[1920px] text-[#333];
+  @apply min-w-[1920px] bg-[#fafafa] bg-[radial-gradient(#d0d0d0_1px,transparent_1px)] bg-size-[12px_12px] text-[#333] dark:bg-gray-950 dark:bg-[radial-gradient(#222_1px,transparent_1px)];
   font-family: 'Pretendard Variable', sans-serif;
 }

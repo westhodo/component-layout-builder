@@ -18,6 +18,7 @@ declare module 'vue' {
     Dialog: typeof import('primevue/dialog')['default']
     Drawer: typeof import('primevue/drawer')['default']
     DrawerDialog: typeof import('./src/components/typeSelct/DrawerDialog.vue')['default']
+    ElButton: typeof import('./src/components/elements/ElButton.vue')['default']
     FileUpload: typeof import('primevue/fileupload')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LnbLayout: typeof import('./src/components/layout/LnbLayout.vue')['default']

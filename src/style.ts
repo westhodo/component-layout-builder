@@ -46,19 +46,19 @@ export const ThemePreset = definePreset(Aura, {
       '900': '#0062a8',
       '950': '#003e6b'
     },
-    primary: {
-      50: '{deepblue.50}',
-      100: '{deepblue.100}',
-      200: '{deepblue.200}',
-      300: '{deepblue.300}',
-      400: '{deepblue.400}',
-      500: '{deepblue.500}',
-      600: '{deepblue.600}',
-      700: '{deepblue.700}',
-      800: '{deepblue.800}',
-      900: '{deepblue.900}',
-      950: '{deepblue.950}'
-    },
+    // primary: {
+    //   50: '{deepblue.50}',
+    //   100: '{deepblue.100}',
+    //   200: '{deepblue.200}',
+    //   300: '{deepblue.300}',
+    //   400: '{deepblue.400}',
+    //   500: '{deepblue.500}',
+    //   600: '{deepblue.600}',
+    //   700: '{deepblue.700}',
+    //   800: '{deepblue.800}',
+    //   900: '{deepblue.900}',
+    //   950: '{deepblue.950}'
+    // },
     surface: {
       ...createRange('zinc')
     }
