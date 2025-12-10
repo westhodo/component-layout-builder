@@ -104,7 +104,7 @@ const addItem = (
   props: Record<string, PropItem> = {}
 ) => {
   components.value.push({
-    id: crypto.randomUUID(),
+    id: Math.random().toString(36).slice(2),
     component: markRaw(component as Component),
     props: reactive(props),
     x: 500,
