@@ -158,14 +158,4 @@ const handleZoom = (target: string) => {
 
   actions[target]?.()
 }
-
-function mapProps(metaProps: Record<string, any>) {
-  console.log(metaProps, 'props')
-  const result: Record<string, any> = {}
-  for (const key in metaProps) {
-    result[key] = metaProps[key]?.value
-  }
-  console.log(result)
-  return result
-}
 </script>

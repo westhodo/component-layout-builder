@@ -1,11 +1,12 @@
 <template>
   <div class="flex items-center gap-2">
     <Checkbox
+      v-model="isActive"
       :inputId="'checkbox-' + props.label.value"
       :invalid="props.invalid.value"
       :size="props.size.value"
       :disabled="props.disabled.value"
-      v-model="isActive"
+      binary
     />
     <label
       v-if="props.label.value"
@@ -19,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+const isActive = ref(false)
 
 interface Props {
   label?: { type: string; value?: string }
@@ -46,6 +48,4 @@ const props = withDefaults(defineProps<Props>(), {
     option: [true, false]
   })
 })
-
-const isActive = ref(true)
 </script>
