@@ -28,7 +28,7 @@
         />
         <Select
           v-if="val.type === 'select'"
-          class="w-full"
+          class="w-full text-sm"
           size="small"
           v-model="val.value"
           :options="val.option"

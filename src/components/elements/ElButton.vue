@@ -8,7 +8,7 @@
     :text="props.text.value"
     :outlined="props.outlined.value"
     :badge="props.badge.value"
-    :size="props.size.value"
+    :size="props.size.value === 'normal' ? undefined : props.size.value"
   />
 </template>
 
@@ -17,7 +17,7 @@ interface Props {
   label?: { type: string; value?: string }
   severity?: { type: string; value?: string }
   badge?: { type: string; value?: string }
-  size?: { type: string; value?: 'small' | 'large' }
+  size?: { type: string; value?: 'small' | 'large' | 'normal' }
   disabled?: { type: string; value?: boolean }
   raised?: { type: string; value?: boolean }
   rounded?: { type: string; value?: boolean }
@@ -44,8 +44,8 @@ const props = withDefaults(defineProps<Props>(), {
   badge: () => ({ type: 'input', value: '' }),
   size: () => ({
     type: 'select',
-    value: 'small',
-    option: ['small', 'large']
+    value: 'normal',
+    option: ['normal', 'small', 'large']
   }),
   disabled: () => ({
     type: 'select',

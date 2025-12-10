@@ -1,5 +1,6 @@
 import ElButton from './ElButton.vue'
 import ElCheckbox from './ElCheckbox.vue'
+import ElDatePicker from './ElDatePicker.vue'
 
 export const componentRegistry = {
   Button: {
@@ -22,8 +23,8 @@ export const componentRegistry = {
       },
       size: {
         type: 'select',
-        value: 'small',
-        option: ['small', 'large']
+        value: 'normal',
+        option: ['normal', 'small', 'large']
       },
       disabled: {
         type: 'select',
@@ -59,8 +60,8 @@ export const componentRegistry = {
       id: { type: 'input', value: 'test' },
       size: {
         type: 'select',
-        value: 'small',
-        option: ['small', 'large']
+        value: 'normal',
+        option: ['normal', 'small', 'large']
       },
       disabled: {
         type: 'select',
@@ -68,6 +69,69 @@ export const componentRegistry = {
         option: [true, false]
       },
       invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  DatePicker: {
+    component: ElDatePicker,
+    defaultProps: () => ({
+      useIcon: {
+        type: 'select',
+        value: true,
+        option: [true, false]
+      },
+      useTime: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      useButton: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      format: {
+        type: 'select',
+        value: 'yy.mm.dd',
+        option: [
+          'yy.mm.dd',
+          'yy-mm-dd',
+          'yy/MM/dd',
+          'yyyy.MM.dd',
+          'yyyy-MM-dd',
+          'yyyy/MM/dd',
+          'MM/dd/yyyy',
+          'MM-dd-yyyy',
+          'M/d/yyyy',
+          'MMM dd, yyyy',
+          'MMMM dd, yyyy',
+          'yyyyMMdd',
+          'yyyy-MM-dd HH:mm',
+          'yyyy.MM.dd HH:mm',
+          'yyyy/MM/dd HH:mm',
+          'yyyy-MM-dd HH:mm:ss',
+          'yyyy-MM-dd hh:mm a'
+        ]
+      },
+      mode: {
+        type: 'select',
+        value: 'single',
+        option: ['single', 'range']
+      },
+      view: {
+        type: 'select',
+        value: 'day',
+        option: ['day', 'month', 'year']
+      },
+      size: {
+        type: 'select',
+        value: 'normal',
+        option: ['normal', 'small', 'large']
+      },
+      disabled: {
         type: 'select',
         value: false,
         option: [true, false]
