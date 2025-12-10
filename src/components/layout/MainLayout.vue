@@ -1,20 +1,22 @@
 <template>
-  <LnbLayout @select-menu="handleMenuClick" />
+  <ComponentPalette @select-menu="handleMenuClick" />
 
-  <div class="layout-wrapper h-full w-full">
-    <div class="fixed z-10">
-      <Button label="zoomin" @click="zoomIn"></Button>
-      <Button label="zoomout" @click="zoomOut"></Button>
-      <Button label="resetZoom" @click="resetZoom"></Button>
-    </div>
+  <div class="h-screen w-full overflow-auto">
     <div
-      class="canvas h-full w-full"
+      class="h-full w-full"
+      @wheel="onWheel"
       :style="{
         transform: `scale(${zoom})`,
         transformOrigin: 'top left'
       }"
     >
-      <div class="h-full w-full">
+      <div
+        ref="viewport"
+        :style="{
+          width: canvasWidth + 'px',
+          height: canvasHeight + 'px'
+        }"
+      >
         <Draggable
           v-for="node in components"
           :key="node.id"
@@ -24,33 +26,38 @@
           :h="node.h"
           :active="node.active"
           :resizable="node.resizable"
+          @click="handleClick(node)"
           @activated="() => updateActive(node.id)"
           @update:x="(val: any) => updatePotision(node.id, { x: val })"
           @update:y="(val: any) => updatePotision(node.id, { y: val })"
+          :grid="grid"
         >
-          <div class="h-full w-full">
+          <div class="h-full w-full overflow-hidden">
             <component :is="node.component" v-bind="node.props" />
           </div>
         </Draggable>
       </div>
     </div>
   </div>
+
+  <ControlLayout :activeElement="selectedItem" @update-prop="updateProp" />
+
+  <AppToolbar @tool-select="handleZoom" />
 </template>
 <script setup lang="ts">
-import { markRaw, ref, type Component } from 'vue'
+import { markRaw, reactive, ref, type Component } from 'vue'
 import Draggable from 'draggable-resizable-vue3'
+import { componentRegistry, type ComponentKey } from '../elements'
 
-import ElButton from '@/components/elements/ElButton.vue'
-import Checkbox from 'primevue/checkbox'
-import ColorPicker from 'primevue/colorpicker'
-import DatePicker from 'primevue/datepicker'
-import InputOtp from 'primevue/inputotp'
-import InputText from 'primevue/inputtext'
+interface PropItem {
+  type: string
+  value: string | boolean
+}
 
 interface DragItem {
   id: string
   component: Component
-  props: Record<string, unknown>
+  props: Record<string, PropItem>
   x?: number
   y?: number
   w?: number
@@ -61,36 +68,49 @@ interface DragItem {
 
 const components = ref<DragItem[]>([])
 const zoom = ref(1)
+const grid = ref([2, 2])
+const canvasWidth = ref(5000)
+const canvasHeight = ref(5000)
+const selectedItem = ref<DragItem | null>(null)
+
+const onWheel = (event: {
+  ctrlKey: unknown
+  preventDefault: () => void
+  deltaY: number
+}) => {
+  if (!event.ctrlKey) return
+  event.preventDefault()
+  event.deltaY < 0 ? zoomIn() : zoomOut()
+}
 
 const zoomIn = () => (zoom.value += 0.1)
 const zoomOut = () => (zoom.value = Math.max(0.1, zoom.value - 0.1))
 const resetZoom = () => (zoom.value = 1)
 
-const handleMenuClick = (menu: { label: string }) => {
-  const actions: Record<string, () => void> = {
-    Button: () => addItem(ElButton, { label: '1234' }),
-    Checkbox: () => addItem(Checkbox, { binary: true }),
-    ColorPicker: () => addItem(ColorPicker),
-    DatePicker: () => addItem(DatePicker),
-    InputOtp: () => addItem(InputOtp),
-    InputText: () => addItem(InputText)
-  }
+const handleMenuClick = (menu: { label: ComponentKey }) => {
+  const entry = componentRegistry[menu.label]
+  const Comp = entry.component
+  const props = entry.defaultProps()
 
-  actions[menu.label]?.()
+  addItem(Comp, props)
+}
+
+const handleClick = (node: DragItem) => {
+  selectedItem.value = node
 }
 
 const addItem = (
   component: Component | string,
-  props: Record<string, unknown> = {}
+  props: Record<string, PropItem> = {}
 ) => {
   components.value.push({
     id: crypto.randomUUID(),
     component: markRaw(component as Component),
-    props,
+    props: reactive(props),
     x: 500,
     y: 200,
-    active: false,
-    resizable: false
+    active: false
+    // resizable: false
   })
 }
 
@@ -98,6 +118,8 @@ const updateActive = (id: string) => {
   components.value.forEach((i) => {
     i.active = i.id === id
   })
+
+  selectedItem.value = components.value.find((i) => i.active) ?? null
 }
 
 const updatePotision = (id: string, patch: { x?: number; y?: number }) => {
@@ -108,5 +130,42 @@ const updatePotision = (id: string, patch: { x?: number; y?: number }) => {
     ...components.value[idx],
     ...patch
   } as (typeof components.value)[number]
+}
+
+const updateProp = ({
+  key,
+  value
+}: {
+  key: string
+  value: string | boolean
+}) => {
+  const activeNode = components.value.find(
+    (v) => v.id === selectedItem.value?.id
+  )
+  if (activeNode) {
+    const targetProp = activeNode.props[key]
+    if (!targetProp) return
+    targetProp.value = value
+  }
+}
+
+const handleZoom = (target: string) => {
+  const actions: Record<string, () => void> = {
+    zoomin: () => zoomIn(),
+    zoomout: () => zoomOut(),
+    zoomreset: () => resetZoom()
+  }
+
+  actions[target]?.()
+}
+
+function mapProps(metaProps: Record<string, any>) {
+  console.log(metaProps, 'props')
+  const result: Record<string, any> = {}
+  for (const key in metaProps) {
+    result[key] = metaProps[key]?.value
+  }
+  console.log(result)
+  return result
 }
 </script>

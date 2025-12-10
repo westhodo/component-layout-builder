@@ -17,6 +17,6 @@
 
 html,
 body {
-  @apply min-w-[1920px] bg-[#fafafa] bg-[radial-gradient(#d0d0d0_1px,transparent_1px)] bg-size-[12px_12px] text-[#333] dark:bg-gray-950 dark:bg-[radial-gradient(#222_1px,transparent_1px)];
+  @apply overflow-hidden bg-[#fafafa] bg-[radial-gradient(#d0d0d0_1px,transparent_1px)] bg-size-[20px_20px] text-[#333] dark:bg-zinc-900 dark:bg-[radial-gradient(#222_1px,transparent_1px)];
   font-family: 'Pretendard Variable', sans-serif;
 }

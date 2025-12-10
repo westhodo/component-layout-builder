@@ -1,22 +1,22 @@
 <template>
-  <nav class="fixed z-10 flex h-screen w-[400px] items-center justify-center">
+  <nav class="z-10 flex h-screen">
     <ul
-      class="h-[calc(100%-30px)] w-[calc(100%-30px)] overflow-x-hidden overflow-y-auto rounded-2xl bg-white p-4 shadow-xl dark:bg-gray-900"
+      class="h-full w-full overflow-x-hidden overflow-y-auto bg-white p-4 shadow-xl dark:bg-zinc-950"
     >
       <li
         v-for="(depth1, index) in component"
         :key="index"
         class="flex flex-wrap gap-2"
       >
-        <p class="mt-3 w-full font-bold">{{ depth1.title }}</p>
+        <p class="mt-3 w-full font-bold dark:text-white">{{ depth1.title }}</p>
         <div
           v-for="(depth2, index2) in depth1.children"
           :key="index2"
-          class="flex w-[calc(50%-4px)] cursor-pointer items-center gap-2 rounded-2xl bg-gray-50 p-3 transition hover:bg-gray-100 dark:bg-gray-950"
+          class="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-gray-50 p-3 transition hover:bg-gray-100 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-900"
           @click="emit('select-menu', depth2)"
         >
-          <AppIcon :icon="depth2.icon" width="16" height="16"></AppIcon>
-          <p class="text-sm">{{ depth2.label }}</p>
+          <AppIcon :icon="depth2.icon" width="14" height="14"></AppIcon>
+          <p class="text-xs">{{ depth2.label }}</p>
         </div>
       </li>
     </ul>
@@ -46,14 +46,9 @@ const component = ref([
         icon: 'solar:check-circle-linear'
       },
       {
-        label: 'ColorPicker',
-        icon: 'solar:pallete-2-linear'
-      },
-      {
         label: 'DatePicker',
         icon: 'solar:calendar-date-linear'
       },
-
       {
         label: 'InputOtp',
         icon: 'solar:password-linear'

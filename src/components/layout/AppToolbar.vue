@@ -1,8 +1,8 @@
 <template>
   <aside
-    class="fixed bottom-0 left-[50%] translate-[-50%] rounded-2xl border border-gray-100 bg-white shadow dark:border-gray-900 dark:bg-gray-900"
+    class="fixed bottom-0 left-[50%] translate-[-50%] rounded-2xl border border-gray-100 bg-white shadow dark:border-zinc-900 dark:bg-zinc-950"
   >
-    <ul class="inline-flex gap-2 p-2 px-4">
+    <ul class="inline-flex gap-2 p-2">
       <li
         v-for="(tool, index) in template"
         :key="index"
@@ -24,9 +24,10 @@
         </div>
         <div
           v-else
-          class="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-lg transition hover:bg-gray-100"
+          class="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-lg transition hover:bg-gray-100 dark:hover:bg-zinc-800"
+          @click="emit('tool-select', tool.event)"
         >
-          <i :class="tool.icon"></i>
+          <AppIcon :icon="tool.icon" width="16" height="16"></AppIcon>
         </div>
       </li>
     </ul>
@@ -38,13 +39,7 @@ import { onMounted, ref } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 
 const { theme, toggleTheme } = useTheme()
-// interface Props {
-//   show: boolean;
-// }
-
-// const props = withDefaults(defineProps<Props>(), {
-//   show: false,
-// });
+const emit = defineEmits(['tool-select'])
 
 const isMode = ref(false)
 
@@ -54,10 +49,25 @@ onMounted(() => {
 
 const template = ref([
   {
+    type: 'button',
+    event: 'zoomin',
+    icon: 'solar:magnifer-zoom-in-linear'
+  },
+  {
+    type: 'button',
+    event: 'zoomout',
+    icon: 'solar:magnifer-zoom-out-linear'
+  },
+  {
+    type: 'button',
+    event: 'zoomreset',
+    icon: 'solar:refresh-bold'
+  },
+  {
     type: 'toggle',
-    event: 'mode',
-    icon: ''
+    event: 'mode'
   }
 ])
 </script>
+
 <style src="../../assets/scss/customSwitch.scss"></style>

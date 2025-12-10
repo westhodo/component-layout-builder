@@ -1,39 +1,76 @@
 <template>
   <Button
-    :label="props.label"
-    :severity="props.severity"
-    :disabled="props.disabled"
-    :raised="props.raised"
-    :rounded="props.rounded"
-    :text="props.text"
-    :outlined="props.outlined"
-    :badge="props.badge"
-    :size="props.size"
-  ></Button>
+    :label="props.label.value"
+    :severity="props.severity.value"
+    :disabled="props.disabled.value"
+    :raised="props.raised.value"
+    :rounded="props.rounded.value"
+    :text="props.text.value"
+    :outlined="props.outlined.value"
+    :badge="props.badge.value"
+    :size="props.size.value"
+  />
 </template>
 
 <script setup lang="ts">
 interface Props {
-  label?: string
-  severity?: string
-  badge?: string
-  size?: string
-  disabled?: boolean
-  raised?: boolean
-  rounded?: boolean
-  text?: boolean
-  outlined?: boolean
+  label?: { type: string; value?: string }
+  severity?: { type: string; value?: string }
+  badge?: { type: string; value?: string }
+  size?: { type: string; value?: 'small' | 'large' }
+  disabled?: { type: string; value?: boolean }
+  raised?: { type: string; value?: boolean }
+  rounded?: { type: string; value?: boolean }
+  text?: { type: string; value?: boolean }
+  outlined?: { type: string; value?: boolean }
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  label: '',
-  severity: 'Primary',
-  badge: '',
-  size: 'small',
-  disabled: false,
-  raised: false,
-  rounded: false,
-  text: false,
-  outlined: false
+  label: () => ({ type: 'input', value: '' }),
+  severity: () => ({
+    type: 'select',
+    value: 'Primary',
+    option: [
+      'Primary',
+      'secondary',
+      'success',
+      'info',
+      'warn',
+      'help',
+      'danger',
+      'contrast'
+    ]
+  }),
+  badge: () => ({ type: 'input', value: '' }),
+  size: () => ({
+    type: 'select',
+    value: 'small',
+    option: ['small', 'large']
+  }),
+  disabled: () => ({
+    type: 'select',
+    value: false,
+    option: [true, false]
+  }),
+  raised: () => ({
+    type: 'select',
+    value: false,
+    option: [true, false]
+  }),
+  rounded: () => ({
+    type: 'select',
+    value: false,
+    option: [true, false]
+  }),
+  text: () => ({
+    type: 'select',
+    value: false,
+    option: [true, false]
+  }),
+  outlined: () => ({
+    type: 'select',
+    value: false,
+    option: [true, false]
+  })
 })
 </script>
