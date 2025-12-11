@@ -1,6 +1,13 @@
 import ElButton from './ElButton.vue'
 import ElCheckbox from './ElCheckbox.vue'
 import ElDatePicker from './ElDatePicker.vue'
+import ElInputOtp from './ElInputOtp.vue'
+import ElInputText from './ElInputText.vue'
+import ElPassword from './ElPassword.vue'
+import ElRadioButton from './ElRadioButton.vue'
+import ElRating from './ElRating.vue'
+import ElTextarea from './ElTextarea.vue'
+import ElToggleSwitch from './ElToggleSwitch.vue'
 
 export const componentRegistry = {
   Button: {
@@ -21,6 +28,7 @@ export const componentRegistry = {
           'contrast'
         ]
       },
+      badge: { type: 'input', value: '' },
       size: {
         type: 'select',
         value: 'normal',
@@ -69,6 +77,11 @@ export const componentRegistry = {
         option: [true, false]
       },
       invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      reverse: {
         type: 'select',
         value: false,
         option: [true, false]
@@ -130,6 +143,152 @@ export const componentRegistry = {
         type: 'select',
         value: 'normal',
         option: ['normal', 'small', 'large']
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  InputOtp: {
+    component: ElInputOtp,
+    defaultProps: () => ({
+      mode: {
+        type: 'select',
+        value: 'none',
+        option: ['none', 'password']
+      },
+      input: {
+        type: 'select',
+        value: 'all',
+        option: ['all', 'number']
+      },
+      size: {
+        type: 'select',
+        value: 'normal',
+        option: ['normal', 'small', 'large']
+      }
+    })
+  },
+  InputText: {
+    component: ElInputText,
+    defaultProps: () => ({
+      invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      helpText: {
+        type: 'input',
+        value: ''
+      },
+      helpTextColor: {
+        type: 'select',
+        value: 'error',
+        option: ['secondary', 'success', 'info', 'warn', 'error', 'contrast']
+      },
+      size: {
+        type: 'select',
+        value: 'normal',
+        option: ['normal', 'small', 'large']
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  Password: {
+    component: ElPassword,
+    defaultProps: () => ({
+      invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      size: {
+        type: 'select',
+        value: 'normal',
+        option: ['normal', 'small', 'large']
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  RadioButton: {
+    component: ElRadioButton,
+    defaultProps: () => ({
+      label: { type: 'input', value: '' },
+      id: { type: 'input', value: 'test' },
+      size: {
+        type: 'select',
+        value: 'normal',
+        option: ['normal', 'small', 'large']
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      reverse: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  Rating: {
+    component: ElRating,
+    defaultProps: () => ({
+      count: {
+        type: 'select',
+        value: 5,
+        option: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      },
+      readonly: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  Textarea: {
+    component: ElTextarea,
+    defaultProps: () => ({
+      invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      },
+      disabled: {
+        type: 'select',
+        value: false,
+        option: [true, false]
+      }
+    })
+  },
+  ToggleSwitch: {
+    component: ElToggleSwitch,
+    defaultProps: () => ({
+      invalid: {
+        type: 'select',
+        value: false,
+        option: [true, false]
       },
       disabled: {
         type: 'select',

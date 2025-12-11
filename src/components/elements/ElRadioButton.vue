@@ -3,9 +3,9 @@
     class="flex items-center gap-2"
     :class="{ 'flex-row-reverse': props.reverse.value }"
   >
-    <Checkbox
+    <RadioButton
       v-model="isActive"
-      :inputId="'checkbox-' + props.label.value"
+      :inputId="'radio-' + props.label.value"
       :invalid="props.invalid.value"
       :size="props.size.value === 'normal' ? undefined : props.size.value"
       :disabled="props.disabled.value"
@@ -13,7 +13,7 @@
     />
     <label
       v-if="props.label.value"
-      :for="'checkbox-' + props.label.value"
+      :for="'radio-' + props.label.value"
       :class="`${props.size.value === 'small' ? 'text-xs' : props.size.value === 'large' ? 'text-md' : 'text-sm'}`"
     >
       {{ props.label.value }}

@@ -58,16 +58,16 @@ const component = ref([
         icon: 'solar:text-bold-duotone'
       },
       {
-        label: 'Knob',
-        icon: 'solar:round-graph-linear'
-      },
-      {
         label: 'Password',
         icon: 'solar:lock-password-outline'
       },
       {
         label: 'RadioButton',
         icon: 'material-symbols:radio-button-checked'
+      },
+      {
+        label: 'Rating',
+        icon: 'solar:star-outline'
       },
       {
         label: 'Textarea',

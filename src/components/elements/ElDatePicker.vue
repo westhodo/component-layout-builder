@@ -1,6 +1,6 @@
 <template>
   <DatePicker
-    v-model="date"
+    v-model="value"
     :placeholder="props.format.value"
     :date-format="props.format.value"
     :show-icon="props.useIcon.value"
@@ -29,7 +29,7 @@ interface Props {
   disabled?: { type: string; value?: boolean }
 }
 
-const date = ref()
+const value = ref()
 
 const props = withDefaults(defineProps<Props>(), {
   useIcon: () => ({

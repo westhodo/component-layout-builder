@@ -1,9 +1,9 @@
 <template>
   <aside
-    v-if="activeElement"
-    class="h-screen overflow-x-hidden overflow-y-auto bg-white p-4 shadow-xl dark:bg-zinc-950"
+    v-if="props.activeElement"
+    class="h-screen overflow-x-hidden overflow-y-auto bg-white p-4 shadow-xl dark:bg-zinc-950 dark:text-white"
   >
-    <div v-if="props.activeElement">
+    <div>
       <h2 class="mb-4 text-xl font-bold">
         {{
           (props.activeElement?.component as any)?.__name.replaceAll('El', '')
@@ -19,9 +19,20 @@
         </p>
         <InputText
           v-if="val.type === 'input'"
-          placeholder="Please enter a value."
+          placeholder="Please enter a text."
           class="w-full"
           type="text"
+          size="small"
+          :value="val.value"
+          @input="(e) => updateProp(key, (e.target as HTMLInputElement).value)"
+        />
+        <InputText
+          v-if="val.type === 'number'"
+          placeholder="Please enter a number."
+          class="w-full"
+          type="number"
+          pattern="^\d+$"
+          inputmode="numeric"
           size="small"
           :value="val.value"
           @input="(e) => updateProp(key, (e.target as HTMLInputElement).value)"

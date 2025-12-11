@@ -18,7 +18,7 @@
         }"
       >
         <Draggable
-          v-for="node in components"
+          v-for="(node, index) in components"
           :key="node.id"
           :x="node.x"
           :y="node.y"
@@ -27,7 +27,7 @@
           :active="node.active"
           :resizable="node.resizable"
           @click="handleClick(node)"
-          @activated="() => updateActive(node.id)"
+          @keyup.esc="handleDel(index)"
           @update:x="(val: any) => updatePotision(node.id, { x: val })"
           @update:y="(val: any) => updatePotision(node.id, { y: val })"
           :grid="grid"
@@ -51,7 +51,7 @@ import { componentRegistry, type ComponentKey } from '../elements'
 
 interface PropItem {
   type: string
-  value: string | boolean
+  value: string | boolean | number
 }
 
 interface DragItem {
@@ -97,6 +97,8 @@ const handleMenuClick = (menu: { label: ComponentKey }) => {
 
 const handleClick = (node: DragItem) => {
   selectedItem.value = node
+  node.active = true
+  components.value.forEach((item) => (item.active = false))
 }
 
 const addItem = (
@@ -114,12 +116,8 @@ const addItem = (
   })
 }
 
-const updateActive = (id: string) => {
-  components.value.forEach((i) => {
-    i.active = i.id === id
-  })
-
-  selectedItem.value = components.value.find((i) => i.active) ?? null
+const handleDel = (index: number) => {
+  components.value.splice(index, 1)
 }
 
 const updatePotision = (id: string, patch: { x?: number; y?: number }) => {
