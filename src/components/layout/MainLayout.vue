@@ -16,6 +16,7 @@
           width: canvasWidth + 'px',
           height: canvasHeight + 'px'
         }"
+        @click.self="handleClear"
       >
         <Draggable
           :class="{ 'view-mode': !isEdit }"
@@ -74,6 +75,7 @@ const canvasWidth = ref(5000)
 const canvasHeight = ref(5000)
 const selectedItem = ref<DragItem | null>(null)
 const isEdit = ref(true)
+const currentActive = ref(false)
 
 const template = reactive([
   {
@@ -108,6 +110,15 @@ watch(isEdit, (val) => {
   components.value.forEach((item) => (item.resizable = val))
 })
 
+watch(
+  selectedItem,
+  (val) => {
+    if (!val) return
+    currentActive.value = val?.active
+  },
+  { deep: true }
+)
+
 const onWheel = (event: {
   ctrlKey: unknown
   preventDefault: () => void
@@ -132,8 +143,12 @@ const handleMenuClick = (menu: { label: ComponentKey }) => {
 
 const handleClick = (node: DragItem) => {
   selectedItem.value = node
-  node.active = true
-  components.value.forEach((item) => (item.active = false))
+  selectedItem.value.active = true
+}
+
+const handleClear = () => {
+  if (!selectedItem.value) return
+  selectedItem.value.active = false
 }
 
 const addItem = (
@@ -192,6 +207,7 @@ const handleTool = (target: string) => {
 
   actions[target]?.()
 }
+defineExpose({ currentActive })
 </script>
 
 <style lang="scss" scoped>
