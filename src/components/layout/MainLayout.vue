@@ -18,6 +18,7 @@
         }"
       >
         <Draggable
+          :class="{ 'view-mode': !isEdit }"
           v-for="(node, index) in components"
           :key="node.id"
           :x="node.x"
@@ -42,10 +43,10 @@
 
   <ControlLayout :activeElement="selectedItem" @update-prop="updateProp" />
 
-  <AppToolbar @tool-select="handleZoom" />
+  <AppToolbar @tool-select="handleTool" :template="template" />
 </template>
 <script setup lang="ts">
-import { markRaw, reactive, ref, type Component } from 'vue'
+import { computed, markRaw, reactive, ref, watch, type Component } from 'vue'
 import Draggable from 'draggable-resizable-vue3'
 import { componentRegistry, type ComponentKey } from '../elements'
 
@@ -72,6 +73,40 @@ const grid = ref([2, 2])
 const canvasWidth = ref(5000)
 const canvasHeight = ref(5000)
 const selectedItem = ref<DragItem | null>(null)
+const isEdit = ref(true)
+
+const template = reactive([
+  {
+    type: 'button',
+    event: 'view',
+    icon: computed(() =>
+      !isEdit.value ? 'ic:twotone-mode-edit' : 'ic:twotone-edit-off'
+    )
+  },
+  {
+    type: 'button',
+    event: 'zoomin',
+    icon: 'solar:magnifer-zoom-in-linear'
+  },
+  {
+    type: 'button',
+    event: 'zoomout',
+    icon: 'solar:magnifer-zoom-out-linear'
+  },
+  {
+    type: 'button',
+    event: 'zoomreset',
+    icon: 'solar:refresh-bold'
+  },
+  {
+    type: 'toggle',
+    event: 'mode'
+  }
+])
+
+watch(isEdit, (val) => {
+  components.value.forEach((item) => (item.resizable = val))
+})
 
 const onWheel = (event: {
   ctrlKey: unknown
@@ -111,8 +146,8 @@ const addItem = (
     props: reactive(props),
     x: 500,
     y: 200,
-    active: false
-    // resizable: false
+    active: false,
+    resizable: isEdit.value
   })
 }
 
@@ -147,13 +182,20 @@ const updateProp = ({
   }
 }
 
-const handleZoom = (target: string) => {
+const handleTool = (target: string) => {
   const actions: Record<string, () => void> = {
     zoomin: () => zoomIn(),
     zoomout: () => zoomOut(),
-    zoomreset: () => resetZoom()
+    zoomreset: () => resetZoom(),
+    view: () => (isEdit.value = !isEdit.value)
   }
 
   actions[target]?.()
 }
 </script>
+
+<style lang="scss" scoped>
+.view-mode {
+  border: none;
+}
+</style>

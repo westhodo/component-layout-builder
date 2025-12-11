@@ -4,7 +4,7 @@
   >
     <ul class="inline-flex gap-2 p-2">
       <li
-        v-for="(tool, index) in template"
+        v-for="(tool, index) in props.template"
         :key="index"
         class="flex items-center"
       >
@@ -40,34 +40,23 @@ import { useTheme } from '@/composables/useTheme'
 
 const { theme, toggleTheme } = useTheme()
 const emit = defineEmits(['tool-select'])
-
 const isMode = ref(false)
+
+interface Props {
+  template: {
+    type: string
+    event: string
+    icon: string
+  }[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  template: () => []
+})
 
 onMounted(() => {
   isMode.value = theme.value !== 'light'
 })
-
-const template = ref([
-  {
-    type: 'button',
-    event: 'zoomin',
-    icon: 'solar:magnifer-zoom-in-linear'
-  },
-  {
-    type: 'button',
-    event: 'zoomout',
-    icon: 'solar:magnifer-zoom-out-linear'
-  },
-  {
-    type: 'button',
-    event: 'zoomreset',
-    icon: 'solar:refresh-bold'
-  },
-  {
-    type: 'toggle',
-    event: 'mode'
-  }
-])
 </script>
 
 <style src="../../assets/scss/customSwitch.scss"></style>

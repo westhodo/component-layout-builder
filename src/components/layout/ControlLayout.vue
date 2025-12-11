@@ -73,13 +73,14 @@ interface DragItem {
 interface Props {
   activeElement: DragItem | null
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  activeElement: null
+})
+
 const emit = defineEmits(['update-prop'])
 
 const updateProp = (key: string, value: unknown) => {
   emit('update-prop', { key, value })
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  activeElement: null
-})
 </script>

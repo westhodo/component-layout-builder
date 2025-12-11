@@ -1,3 +1,4 @@
+import ElLayer from './ElLayer.vue'
 import ElButton from './ElButton.vue'
 import ElCheckbox from './ElCheckbox.vue'
 import ElDatePicker from './ElDatePicker.vue'
@@ -10,6 +11,19 @@ import ElTextarea from './ElTextarea.vue'
 import ElToggleSwitch from './ElToggleSwitch.vue'
 
 export const componentRegistry = {
+  Layer: {
+    component: ElLayer,
+    defaultProps: () => ({
+      width: {
+        type: 'number',
+        value: 360
+      },
+      height: {
+        type: 'number',
+        value: 720
+      }
+    })
+  },
   Button: {
     component: ElButton,
     defaultProps: () => ({
