@@ -117,10 +117,6 @@ const component = ref([
         icon: 'material-symbols:keyboard-arrow-down-rounded'
       },
       {
-        label: 'Card',
-        icon: 'material-symbols:page-control'
-      },
-      {
         label: 'Divider',
         icon: 'material-symbols:account-tree-outline-rounded'
       },
@@ -135,7 +131,7 @@ const component = ref([
     children: [
       {
         label: 'FileUpload',
-        icon: 'material-symbols:keyboard-arrow-down-rounded'
+        icon: 'solar:upload-square-outline'
       }
     ]
   },
@@ -144,7 +140,7 @@ const component = ref([
     children: [
       {
         label: 'Breadcrumb',
-        icon: 'material-symbols:keyboard-arrow-down-rounded'
+        icon: 'material-symbols:steppers'
       }
     ]
   }

@@ -1,5 +1,6 @@
 <template>
   <Button
+    class="w-full"
     :label="props.label.value"
     :severity="props.severity.value"
     :disabled="props.disabled.value"
