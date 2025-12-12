@@ -5,3 +5,7 @@ import Lara from '@primeuix/themes/lara'
 import Nora from '@primeuix/themes/nora'
 
 export const ThemePreset = definePreset(Aura)
+export const themes = { Aura, Material, Lara, Nora }
+export const switchTheme = (themeName: keyof typeof themes) => {
+  definePreset(themes[themeName])
+}
