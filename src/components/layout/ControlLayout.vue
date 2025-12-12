@@ -1,7 +1,7 @@
 <template>
   <aside
     v-if="props.activeElement"
-    class="h-screen overflow-x-hidden overflow-y-auto bg-white p-4 shadow-xl dark:bg-zinc-950 dark:text-white"
+    class="border-primary-500 h-screen overflow-x-hidden overflow-y-auto border-t-20 bg-white p-4 shadow-xl dark:bg-zinc-950 dark:text-white"
   >
     <div>
       <h2 class="mb-4 text-xl font-bold">

@@ -35,6 +35,8 @@ declare module 'vue' {
     ElToggleSwicth: typeof import('./src/components/elements/ElToggleSwicth.vue')['default']
     ElToggleSwitch: typeof import('./src/components/elements/ElToggleSwitch.vue')['default']
     FileUpload: typeof import('primevue/fileupload')['default']
+    InputGroup: typeof import('primevue/inputgroup')['default']
+    InputGroupAddon: typeof import('primevue/inputgroupaddon')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
     InputOtp: typeof import('primevue/inputotp')['default']
     InputText: typeof import('primevue/inputtext')['default']
@@ -42,6 +44,7 @@ declare module 'vue' {
     MainLayout: typeof import('./src/components/layout/MainLayout.vue')['default']
     Message: typeof import('primevue/message')['default']
     Password: typeof import('primevue/password')['default']
+    Popover: typeof import('primevue/popover')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     Rating: typeof import('primevue/rating')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -51,5 +54,8 @@ declare module 'vue' {
     Textarea: typeof import('primevue/textarea')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     Toolbar: typeof import('./src/components/layout/Toolbar.vue')['default']
+  }
+  export interface GlobalDirectives {
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }

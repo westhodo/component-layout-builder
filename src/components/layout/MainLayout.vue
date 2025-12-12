@@ -45,6 +45,29 @@
   <ControlLayout :activeElement="selectedItem" @update-prop="updateProp" />
 
   <AppToolbar @tool-select="handleTool" :template="template" />
+
+  <Popover ref="op" class="dark:bg-zinc-950!">
+    <p class="pb-2 text-sm font-bold">Primary color</p>
+    <ul class="flex max-w-[280px] flex-wrap items-center gap-1">
+      <li
+        v-for="(color, index) in colorPalette"
+        :key="index"
+        class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-4xl border-2 border-transparent transition"
+        @click="(setGlobalPrimaryColor(color), (selectedColor = index))"
+        :style="
+          selectedColor === index
+            ? `border-color:${color};`
+            : `border-color: transparent`
+        "
+      >
+        <div
+          class="h-4.5 w-4.5 rounded-4xl"
+          :style="`background-color : ${color};`"
+        >
+        </div>
+      </li>
+    </ul>
+  </Popover>
 </template>
 <script setup lang="ts">
 import { computed, markRaw, reactive, ref, watch, type Component } from 'vue'
@@ -70,12 +93,32 @@ interface DragItem {
 
 const components = ref<DragItem[]>([])
 const zoom = ref(1)
+const selectedColor = ref(0)
 const grid = ref([2, 2])
 const canvasWidth = ref(5000)
 const canvasHeight = ref(5000)
 const selectedItem = ref<DragItem | null>(null)
 const isEdit = ref(true)
 const currentActive = ref(false)
+const op = ref()
+const colorPalette = ref([
+  '#10b981',
+  '#22c55e',
+  '#84cc16',
+  '#f97316',
+  '#f59e0b',
+  '#eab308',
+  '#14b8a6',
+  '#06b6d4',
+  '#0ea5e9',
+  '#3b82f6',
+  '#6366f1',
+  '#8b5cf6',
+  '#a855f7',
+  '#d946ef',
+  '#ec4899',
+  '#f43f5e'
+])
 
 const template = reactive([
   {
@@ -83,26 +126,43 @@ const template = reactive([
     event: 'view',
     icon: computed(() =>
       !isEdit.value ? 'ic:twotone-mode-edit' : 'ic:twotone-edit-off'
-    )
+    ),
+    tooltip: computed(() => (!isEdit.value ? 'Edit' : 'View'))
   },
   {
     type: 'button',
     event: 'zoomin',
-    icon: 'solar:magnifer-zoom-in-linear'
+    icon: 'solar:magnifer-zoom-in-linear',
+    tooltip: 'Zomm In'
   },
   {
     type: 'button',
     event: 'zoomout',
-    icon: 'solar:magnifer-zoom-out-linear'
+    icon: 'solar:magnifer-zoom-out-linear',
+    tooltip: 'Zomm Out'
   },
   {
     type: 'button',
     event: 'zoomreset',
-    icon: 'solar:refresh-bold'
+    icon: 'solar:refresh-bold',
+    tooltip: 'Zomm Reset'
+  },
+  {
+    type: 'button',
+    event: 'colorchange',
+    icon: 'solar:pallete-2-linear',
+    tooltip: 'Choose Color'
+  },
+  {
+    type: 'button',
+    event: 'uichange',
+    icon: 'solar:settings-outline',
+    tooltip: 'Choose UI Style'
   },
   {
     type: 'toggle',
-    event: 'mode'
+    event: 'mode',
+    tooltip: 'Switch Theme'
   }
 ])
 
@@ -138,7 +198,7 @@ const handleMenuClick = (menu: { label: ComponentKey }) => {
   const Comp = entry.component
   const props = entry.defaultProps()
 
-  addItem(Comp, props)
+  handleAddItem(Comp, props)
 }
 
 const handleClick = (node: DragItem) => {
@@ -151,7 +211,7 @@ const handleClear = () => {
   selectedItem.value.active = false
 }
 
-const addItem = (
+const handleAddItem = (
   component: Component | string,
   props: Record<string, PropItem> = {}
 ) => {
@@ -202,11 +262,19 @@ const handleTool = (target: string) => {
     zoomin: () => zoomIn(),
     zoomout: () => zoomOut(),
     zoomreset: () => resetZoom(),
-    view: () => (isEdit.value = !isEdit.value)
+    view: () => (isEdit.value = !isEdit.value),
+    colorchange: () => op.value.toggle(event)
   }
 
   actions[target]?.()
 }
+
+const setGlobalPrimaryColor = (color: string) => {
+  const root = document.documentElement
+
+  root.style.setProperty('--p-primary-500', color)
+}
+
 defineExpose({ currentActive })
 </script>
 

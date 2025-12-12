@@ -6,7 +6,13 @@
       <li
         v-for="(tool, index) in props.template"
         :key="index"
-        class="flex items-center"
+        class="flex items-center text-sm"
+        v-tooltip.bottom="{
+          value: tool.tooltip,
+          pt: {
+            text: 'text-xs'
+          }
+        }"
       >
         <div class="custom-switch" v-if="tool.type === 'toggle'">
           <input
@@ -47,6 +53,7 @@ interface Props {
     type: string
     event: string
     icon: string
+    tooltip: string
   }[]
 }
 
