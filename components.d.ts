@@ -19,6 +19,7 @@ declare module 'vue' {
     Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     ComponentPalette: typeof import('./src/components/layout/ComponentPalette.vue')['default']
+    ControlColumnsLayout: typeof import('./src/components/layout/ControlColumnsLayout.vue')['default']
     ControlLayout: typeof import('./src/components/layout/ControlLayout.vue')['default']
     copy: typeof import('./src/components/elements/ElDataTable copy.vue')['default']
     DatePicker: typeof import('primevue/datepicker')['default']
