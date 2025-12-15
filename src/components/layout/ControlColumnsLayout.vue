@@ -1,9 +1,5 @@
 <template>
-  <Accordion
-    value="0"
-    class="bg-primary-50 dark:bg-primary-950"
-    v-if="props.type === 'columns'"
-  >
+  <Accordion value="0" class="bg-primary-50 dark:bg-primary-950">
     <AccordionPanel value="0">
       <AccordionHeader>
         <div class="flex items-center gap-2">

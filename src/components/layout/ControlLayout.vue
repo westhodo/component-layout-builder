@@ -47,6 +47,7 @@
         </Select>
 
         <ControlColumnsLayout
+          v-if="key === 'columns'"
           :type="key"
           :data="val"
           @update-data-prop="
