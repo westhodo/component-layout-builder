@@ -42,11 +42,17 @@
     </div>
   </div>
 
-  <ControlLayout :activeElement="selectedItem" @update-prop="updateProp" />
+  <ControlLayout
+    :activeElement="selectedItem"
+    @update-prop="updateSingleProp"
+    @updateDataProp="updateDataProp"
+    @add-column="addColumns"
+    @remove-column="removeColumns"
+  />
 
   <AppToolbar @tool-select="handleTool" :template="template" />
 
-  <Popover ref="op" class="dark:bg-zinc-950!">
+  <Popover ref="colorPaletteRef" class="dark:bg-zinc-950!">
     <p class="pb-2 text-sm font-bold">Primary color</p>
     <ul class="flex max-w-[280px] flex-wrap items-center gap-1">
       <li
@@ -73,6 +79,7 @@
 import { computed, markRaw, reactive, ref, watch, type Component } from 'vue'
 import Draggable from 'draggable-resizable-vue3'
 import { componentRegistry, type ComponentKey } from '../elements'
+import { colorPalette } from '@/constants/layout'
 
 interface PropItem {
   type: string
@@ -100,25 +107,7 @@ const canvasHeight = ref(5000)
 const selectedItem = ref<DragItem | null>(null)
 const isEdit = ref(true)
 const currentActive = ref(false)
-const op = ref()
-const colorPalette = ref([
-  '#10b981',
-  '#22c55e',
-  '#84cc16',
-  '#f97316',
-  '#f59e0b',
-  '#eab308',
-  '#14b8a6',
-  '#06b6d4',
-  '#0ea5e9',
-  '#3b82f6',
-  '#6366f1',
-  '#8b5cf6',
-  '#a855f7',
-  '#d946ef',
-  '#ec4899',
-  '#f43f5e'
-])
+const colorPaletteRef = ref()
 
 const template = reactive([
   {
@@ -152,12 +141,6 @@ const template = reactive([
     event: 'colorchange',
     icon: 'solar:pallete-2-linear',
     tooltip: 'Choose Color'
-  },
-  {
-    type: 'button',
-    event: 'uichange',
-    icon: 'solar:settings-outline',
-    tooltip: 'Choose UI Style'
   },
   {
     type: 'toggle',
@@ -240,7 +223,7 @@ const updatePotision = (id: string, patch: { x?: number; y?: number }) => {
   } as (typeof components.value)[number]
 }
 
-const updateProp = ({
+const updateSingleProp = ({
   key,
   value
 }: {
@@ -250,10 +233,54 @@ const updateProp = ({
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
+  console.log(key, value)
   if (activeNode) {
     const targetProp = activeNode.props[key]
     if (!targetProp) return
     targetProp.value = value
+  }
+}
+
+const updateDataProp = (
+  key: string | number,
+  value: string | boolean,
+  column: string | number
+) => {
+  const activeNode = components.value.find(
+    (v) => v.id === selectedItem.value?.id
+  )
+  if (activeNode) {
+    const targetProp = activeNode.props?.columns[key]
+    if (!targetProp) return
+    targetProp[column] = value
+  }
+}
+
+const addColumns = (index: number) => {
+  const activeNode = components.value.find(
+    (v) => v.id === selectedItem.value?.id
+  )
+  if (activeNode) {
+    const newColumn = {
+      key: '1',
+      label: '1',
+      width: '',
+      sort: false
+    }
+
+    if (index === -1) {
+      activeNode.props.columns.push(newColumn)
+    } else {
+      activeNode.props.columns.splice(index + 1, 0, newColumn)
+    }
+  }
+}
+const removeColumns = (index: number) => {
+  const activeNode = components.value.find(
+    (v) => v.id === selectedItem.value?.id
+  )
+  if (activeNode) {
+    activeNode.props.columns.splice(index, 1)
   }
 }
 
@@ -263,7 +290,7 @@ const handleTool = (target: string) => {
     zoomout: () => zoomOut(),
     zoomreset: () => resetZoom(),
     view: () => (isEdit.value = !isEdit.value),
-    colorchange: () => op.value.toggle(event)
+    colorchange: () => colorPaletteRef.value.toggle(event)
   }
 
   actions[target]?.()

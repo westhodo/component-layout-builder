@@ -2,7 +2,7 @@
   <div
     class="grid grid-rows-1"
     :class="[
-      { 'grid-cols-[240px_1fr_300px]': currentActive },
+      { 'grid-cols-[240px_1fr_400px]': currentActive },
       { 'grid-cols-[240px_1fr]': !currentActive }
     ]"
   >

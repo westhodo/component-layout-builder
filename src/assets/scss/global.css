@@ -20,3 +20,10 @@ body {
   @apply overflow-hidden bg-[#fafafa] bg-[radial-gradient(#d0d0d0_1px,transparent_1px)] bg-size-[20px_20px] text-[#333] dark:bg-zinc-900 dark:bg-[radial-gradient(#222_1px,transparent_1px)];
   font-family: 'Pretendard Variable', sans-serif;
 }
+
+.p-accordionpanel .p-accordionheader {
+  @apply p-[12px_8px]!;
+}
+.p-accordionpanel .p-accordioncontent-content {
+  @apply bg-transparent! p-[8px]!;
+}
