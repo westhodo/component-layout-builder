@@ -37,7 +37,6 @@
           :style="{
             width: col.width ? col.width - 32 + 'px' : 'auto'
           }"
-          :class="col.class"
           :header-style="{ 'white-space': 'nowrap', 'font-size': '14px' }"
           :field="col.key"
           :sortable="col.sort"

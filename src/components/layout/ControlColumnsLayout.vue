@@ -54,14 +54,10 @@
                 "
               />
               <Checkbox
-                :value="form.sort"
-                @input="
-                  (e: { target: HTMLInputElement }) =>
-                    updateDataProp(
-                      index,
-                      (e.target as HTMLInputElement).value,
-                      'sort'
-                    )
+                :binary="true"
+                :modelValue="form.sort"
+                @update:modelValue="
+                  (v: boolean) => updateDataProp(index, v, 'sort')
                 "
               />
             </div>
