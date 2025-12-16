@@ -43,9 +43,7 @@
           size="small"
           v-model="val.value"
           :options="val.option"
-        >
-        </Select>
-
+        />
         <ControlColumnsLayout
           v-if="key === 'columns'"
           :type="key"
@@ -99,6 +97,7 @@ const emit = defineEmits([
 
 const updateProp = (key: string, value: unknown) => {
   emit('update-prop', { key, value })
+  console.log(key, value, 'key value')
 }
 
 const updateDataProp = (index: number, value: unknown, column: string) => {

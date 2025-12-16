@@ -165,11 +165,11 @@ watch(
 const onWheel = (event: {
   ctrlKey: unknown
   preventDefault: () => void
-  deltaY: number
+  y: number
 }) => {
   if (!event.ctrlKey) return
   event.preventDefault()
-  event.deltaY < 0 ? zoomIn() : zoomOut()
+  event.y < 0 ? zoomIn() : zoomOut()
 }
 
 const zoomIn = () => (zoom.value += 0.1)
@@ -262,8 +262,8 @@ const addColumns = (index: number) => {
   )
   if (activeNode) {
     const newColumn = {
-      key: '1',
-      label: '1',
+      key: Math.random().toString(36).slice(2),
+      label: 'New column',
       width: '',
       sort: false
     }

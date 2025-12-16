@@ -356,16 +356,6 @@ export const componentRegistry = {
         value: false,
         option: [true, false]
       },
-      scroll: {
-        type: 'select',
-        value: false,
-        option: [true, false]
-      },
-      scrollable: {
-        type: 'select',
-        value: false,
-        option: [true, false]
-      },
       emptyText: {
         type: 'input',
         value: '등록된 데이터가 없습니다.'

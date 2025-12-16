@@ -10,22 +10,22 @@
       <PrimeDataTable
         ref="dataTableRef"
         :value="props.value"
-        :data-key="props.columns[0].key"
+        :data-key="props.columns[0]?.key"
         :loading="props.loading.value"
         column-resize-mode="fit"
         :selection-mode="props.selectedMode.value"
-        :scrollable="props.scrollable.value"
+        :selection="selectedItem"
       >
         <template #empty>
           <p
             v-if="!props.loading"
             class="flex flex-col items-center justify-center px-5 text-sm"
           >
-            {{ props.emptyText }}
+            {{ props.emptyText.value }}
           </p>
         </template>
         <PrimeColumn
-          v-if="props.useCheckbox"
+          v-if="props.useCheckbox.value"
           selection-mode="multiple"
           header-style="width: 48px"
         >
@@ -61,34 +61,55 @@
         </PrimeColumn>
       </PrimeDataTable>
       <Popover ref="op">
+        <div class="mb-1 flex items-center gap-2 px-4 text-xs font-bold">
+          <p class="w-[50%]">Label</p>
+          <p class="w-[25%]">Width</p>
+          <p class="w-[25%]">Sort</p>
+        </div>
+
         <div
-          v-for="(column, index) in props.columns"
+          v-for="(form, index) in props.columns"
           :key="index"
-          class="border-primary flex items-center gap-2 border-l-2 pb-2"
+          class="border-primary ml-[4.5px] border-l-2 pt-1 pb-1"
         >
-          <InputText
-            placeholder="Please enter a text."
-            class="ml-2 w-full"
-            type="text"
-            size="small"
-            :value="column.label"
-            @input="(e) => console.log(e)"
-          />
-          <Button
-            class="h-6! w-6!"
-            icon="pi pi-minus"
-            outlined
-            rounded
-            size="small"
-            severity="danger"
-          />
-          <Button
-            icon="pi pi-plus"
-            outlined
-            rounded
-            size="small"
-            class="h-6! w-6!"
-          />
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <InputText
+                placeholder="Please enter a text."
+                class="ml-2 w-full"
+                type="text"
+                size="small"
+                :value="form.label"
+              />
+              <InputText
+                placeholder="Number"
+                class="w-21.5"
+                type="number"
+                pattern="^\d+$"
+                inputmode="numeric"
+                size="small"
+                :value="form.width"
+              />
+              <Checkbox :binary="true" :modelValue="form.sort" />
+            </div>
+            <div class="flex items-center gap-1">
+              <Button
+                class="h-6! w-6!"
+                icon="pi pi-minus"
+                outlined
+                rounded
+                size="small"
+                severity="danger"
+              />
+              <Button
+                icon="pi pi-plus"
+                outlined
+                rounded
+                size="small"
+                class="h-6! w-6!"
+              />
+            </div>
+          </div>
         </div>
       </Popover>
     </div>
@@ -98,7 +119,6 @@
 <script setup lang="ts">
 import PrimeDataTable from 'primevue/datatable'
 import PrimeColumn from 'primevue/column'
-import Skeleton from 'primevue/skeleton'
 import { ref } from 'vue'
 
 export interface Column {
@@ -113,12 +133,11 @@ interface Props {
   columns?: Column[]
   loading?: { type: string; value?: boolean }
   useCheckbox?: { type: string; value?: boolean }
-  scroll?: { type: string; value?: boolean }
-  scrollable?: { type: string; value?: boolean }
   selectedMode?: { type: string; value?: 'single' | 'multiple' }
   emptyText: { type: string; value?: string }
 }
 
+const selectedItem = ref([])
 const op = ref()
 const isEnter = ref(false)
 const props = withDefaults(defineProps<Props>(), {
@@ -130,16 +149,6 @@ const props = withDefaults(defineProps<Props>(), {
     option: [true, false]
   }),
   useCheckbox: () => ({
-    type: 'select',
-    value: false,
-    option: [true, false]
-  }),
-  scroll: () => ({
-    type: 'select',
-    value: false,
-    option: [true, false]
-  }),
-  scrollable: () => ({
     type: 'select',
     value: false,
     option: [true, false]
