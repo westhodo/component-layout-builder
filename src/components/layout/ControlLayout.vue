@@ -37,6 +37,16 @@
           :value="val.value"
           @input="(e) => updateProp(key, (e.target as HTMLInputElement).value)"
         />
+        <Textarea
+          v-if="val.type === 'textarea'"
+          class="w-full"
+          style="font-size: 14px"
+          auto-resize
+          rows="4"
+          :value="val.value"
+          @input="(e) => updateProp(key, (e.target as HTMLInputElement).value)"
+        />
+
         <Select
           v-if="val.type === 'select'"
           class="w-full text-sm"

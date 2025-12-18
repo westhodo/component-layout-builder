@@ -94,6 +94,10 @@ export const component = [
     title: 'Panel',
     children: [
       {
+        label: 'Panel',
+        icon: 'material-symbols:bottom-panel-close-outline-sharp'
+      },
+      {
         label: 'Accordion',
         icon: 'material-symbols:keyboard-arrow-down-rounded'
       },
@@ -104,15 +108,6 @@ export const component = [
       {
         label: 'Tabs',
         icon: 'ic:outline-grid-on'
-      }
-    ]
-  },
-  {
-    title: 'File',
-    children: [
-      {
-        label: 'FileUpload',
-        icon: 'solar:upload-square-outline'
       }
     ]
   },

@@ -12,6 +12,8 @@ import ElToggleSwitch from './ElToggleSwitch.vue'
 import ElDataTable from './ElDataTable.vue'
 import ElPaginator from './ElPaginator.vue'
 import ElAccordion from './ElAccordion.vue'
+import ElDivider from './ElDivider.vue'
+import ElPanel from './ElPanel.vue'
 
 export const componentRegistry = {
   Layer: {
@@ -398,6 +400,37 @@ export const componentRegistry = {
           value: Math.random().toString(36).slice(2)
         }
       ]
+    })
+  },
+  Divider: {
+    component: ElDivider,
+    defaultProps: () => ({
+      type: {
+        type: 'select',
+        value: 'solid',
+        option: ['solid', 'dotted', 'dashed']
+      },
+      layout: {
+        type: 'select',
+        value: 'none',
+        option: ['none', 'vertical']
+      },
+      text: {
+        type: 'input',
+        value: ''
+      },
+      align: {
+        type: 'select',
+        value: 'left',
+        option: ['left', 'center', 'right']
+      }
+    })
+  },
+  Panel: {
+    component: ElPanel,
+    defaultProps: () => ({
+      header: { type: 'input', value: 'header' },
+      text: { type: 'textarea', value: '' }
     })
   }
 } as const
