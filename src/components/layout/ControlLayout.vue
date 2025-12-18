@@ -97,7 +97,6 @@ const emit = defineEmits([
 
 const updateProp = (key: string, value: unknown) => {
   emit('update-prop', { key, value })
-  console.log(key, value, 'key value')
 }
 
 const updateDataProp = (index: number, value: unknown, column: string) => {

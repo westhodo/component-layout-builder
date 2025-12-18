@@ -329,23 +329,37 @@ export const componentRegistry = {
   DataTable: {
     component: ElDataTable,
     defaultProps: () => ({
-      value: [
-        {
-          key1: 'key1',
-          key2: 'key2',
-          key3: 'key3',
-          key4: 'key4',
-          key5: 'key5'
-        },
-        { key1: 'key1', key2: 'key2', key3: 'key3', key4: 'key4', key5: 'key5' }
-      ],
       columns: [
-        { key: 'column1', label: 'column1', sort: false },
-        { key: 'column2', label: 'column2', sort: false },
-        { key: 'column3', label: 'column3', sort: false },
-        { key: 'column4', label: 'column4', sort: false },
-        { key: 'column5', label: 'column5', sort: false }
+        {
+          key: Math.random().toString(36).slice(2),
+          label: 'column',
+          sort: false
+        },
+        {
+          key: Math.random().toString(36).slice(2),
+          label: 'column',
+          sort: false
+        },
+        {
+          key: Math.random().toString(36).slice(2),
+          label: 'column',
+          sort: false
+        },
+        {
+          key: Math.random().toString(36).slice(2),
+          label: 'column',
+          sort: false
+        },
+        {
+          key: Math.random().toString(36).slice(2),
+          label: 'column',
+          sort: false
+        }
       ],
+      rows: {
+        type: 'number',
+        value: 6
+      },
       loading: {
         type: 'select',
         value: false,
@@ -355,10 +369,6 @@ export const componentRegistry = {
         type: 'select',
         value: false,
         option: [true, false]
-      },
-      emptyText: {
-        type: 'input',
-        value: '등록된 데이터가 없습니다.'
       },
       selectedMode: {
         type: 'select',

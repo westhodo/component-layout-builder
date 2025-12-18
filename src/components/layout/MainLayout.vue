@@ -59,7 +59,11 @@
         v-for="(color, index) in colorPalette"
         :key="index"
         class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-4xl border-2 border-transparent transition"
-        @click="(setGlobalPrimaryColor(color), (selectedColor = index))"
+        @click="
+          ((customColor = ''),
+          setGlobalPrimaryColor(color),
+          (selectedColor = index))
+        "
         :style="
           selectedColor === index
             ? `border-color:${color};`
@@ -72,6 +76,17 @@
         >
         </div>
       </li>
+      <li
+        class="flex h-6 w-6 items-center justify-center rounded-4xl"
+        :class="{ 'border-2': customColor }"
+        :style="`border-color: #${customColor};`"
+      >
+        <ColorPicker
+          v-model="customColor"
+          format="hex"
+          class="flex h-4.5 w-4.5 overflow-hidden rounded-4xl"
+        />
+      </li>
     </ul>
   </Popover>
 </template>
@@ -81,15 +96,10 @@ import Draggable from 'draggable-resizable-vue3'
 import { componentRegistry, type ComponentKey } from '../elements'
 import { colorPalette } from '@/constants/layout'
 
-interface PropItem {
-  type: string
-  value: string | boolean | number
-}
-
 interface DragItem {
   id: string
   component: Component
-  props: Record<string, PropItem>
+  props: Record<string, unknown>
   x?: number
   y?: number
   w?: number
@@ -100,7 +110,7 @@ interface DragItem {
 
 const components = ref<DragItem[]>([])
 const zoom = ref(1)
-const selectedColor = ref(0)
+const selectedColor = ref<number | null>(0)
 const grid = ref([2, 2])
 const canvasWidth = ref(5000)
 const canvasHeight = ref(5000)
@@ -108,6 +118,7 @@ const selectedItem = ref<DragItem | null>(null)
 const isEdit = ref(true)
 const currentActive = ref(false)
 const colorPaletteRef = ref()
+const customColor = ref('')
 
 const template = reactive([
   {
@@ -162,6 +173,11 @@ watch(
   { deep: true }
 )
 
+watch(customColor, (val) => {
+  setGlobalPrimaryColor('#' + val)
+  selectedColor.value = null
+})
+
 const onWheel = (event: {
   ctrlKey: unknown
   preventDefault: () => void
@@ -196,7 +212,7 @@ const handleClear = () => {
 
 const handleAddItem = (
   component: Component | string,
-  props: Record<string, PropItem> = {}
+  props: Record<string, unknown>
 ) => {
   components.value.push({
     id: Math.random().toString(36).slice(2),
@@ -233,24 +249,29 @@ const updateSingleProp = ({
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
-  console.log(key, value)
   if (activeNode) {
     const targetProp = activeNode.props[key]
-    if (!targetProp) return
-    targetProp.value = value
+    if (
+      typeof targetProp === 'object' &&
+      targetProp !== null &&
+      'value' in targetProp
+    ) {
+      targetProp.value = value
+    }
   }
 }
 
 const updateDataProp = (
-  key: string | number,
+  index: number,
   value: string | boolean,
   column: string | number
 ) => {
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
-  if (activeNode) {
-    const targetProp = activeNode.props?.columns[key]
+
+  if (activeNode && Array.isArray(activeNode.props.columns)) {
+    const targetProp = activeNode.props?.columns[index]
     if (!targetProp) return
     targetProp[column] = value
   }
@@ -263,24 +284,27 @@ const addColumns = (index: number) => {
   if (activeNode) {
     const newColumn = {
       key: Math.random().toString(36).slice(2),
-      label: 'New column',
+      label: 'column',
       width: '',
       sort: false
     }
 
-    if (index === -1) {
-      activeNode.props.columns.push(newColumn)
-    } else {
-      activeNode.props.columns.splice(index + 1, 0, newColumn)
+    if (Array.isArray(activeNode.props.columns)) {
+      if (index === -1) {
+        activeNode.props.columns.push(newColumn)
+      } else {
+        activeNode.props.columns.splice(index + 1, 0, newColumn)
+      }
     }
   }
 }
+
 const removeColumns = (index: number) => {
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
   if (activeNode) {
-    activeNode.props.columns.splice(index, 1)
+    activeNode.props.columns ?? [].splice(index, 1)
   }
 }
 
@@ -298,8 +322,12 @@ const handleTool = (target: string) => {
 
 const setGlobalPrimaryColor = (color: string) => {
   const root = document.documentElement
+  const isDark = root.classList.contains('app-theme-dark')
 
-  root.style.setProperty('--p-primary-500', color)
+  if (isDark) {
+    root.style.setProperty('--p-primary-400', color)
+    root.style.setProperty('--p-primary-500', color)
+  } else root.style.setProperty('--p-primary-500', color)
 }
 
 defineExpose({ currentActive })

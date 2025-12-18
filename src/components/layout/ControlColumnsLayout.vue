@@ -4,7 +4,7 @@
       <AccordionHeader>
         <div class="flex items-center gap-2">
           <div class="bg-primary flex h-3 w-3 items-center rounded-4xl"> </div>
-          <p class="font-bold">{{ props.type }} option</p>
+          <p class="font-bold">Option</p>
         </div>
       </AccordionHeader>
       <AccordionContent>
