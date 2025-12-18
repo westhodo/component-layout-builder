@@ -44,16 +44,26 @@
           v-model="val.value"
           :options="val.option"
         />
-        <ControlColumnsLayout
+        <ClColumns
           v-if="key === 'columns'"
           :type="key"
           :data="val"
           @update-data-prop="
-            (index: number, value: unknown, column: string) =>
-              updateDataProp(index, value, column)
+            (index: number, value: unknown, column: string, key: string) =>
+              updateDataProp(index, value, column, key)
           "
-          @add-column="(index: number) => emit('add-column', index)"
-          @remove-column="(index: number) => emit('remove-column', index)"
+          @add-column="(index: number) => emit('add-column', key, index)"
+          @remove-column="(index: number) => emit('remove-column', key, index)"
+        />
+        <ClAccordion
+          v-if="key === 'tabData'"
+          :data="val"
+          @update-data-prop="
+            (index: number, value: unknown, column: string, key: string) =>
+              updateDataProp(index, value, column, key)
+          "
+          @add-column="(index: number) => emit('add-column', key, index)"
+          @remove-column="(index: number) => emit('remove-column', key, index)"
         />
       </div>
     </div>
@@ -99,7 +109,12 @@ const updateProp = (key: string, value: unknown) => {
   emit('update-prop', { key, value })
 }
 
-const updateDataProp = (index: number, value: unknown, column: string) => {
-  emit('update-data-prop', index, value, column)
+const updateDataProp = (
+  index: number,
+  value: unknown,
+  column: string,
+  key: string
+) => {
+  emit('update-data-prop', index, value, column, key)
 }
 </script>

@@ -87,14 +87,6 @@ export const component = [
       {
         label: 'Paginator',
         icon: 'material-symbols:page-control'
-      },
-      {
-        label: 'Tree',
-        icon: 'material-symbols:account-tree-outline-rounded'
-      },
-      {
-        label: 'TreeTable',
-        icon: 'ic:outline-grid-on'
       }
     ]
   },

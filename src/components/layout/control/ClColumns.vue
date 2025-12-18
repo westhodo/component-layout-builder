@@ -32,7 +32,8 @@
                     updateDataProp(
                       index,
                       (e.target as HTMLInputElement).value,
-                      'label'
+                      'label',
+                      'column'
                     )
                 "
               />
@@ -49,7 +50,8 @@
                     updateDataProp(
                       index,
                       (e.target as HTMLInputElement).value,
-                      'width'
+                      'width',
+                      'column'
                     )
                 "
               />
@@ -57,7 +59,7 @@
                 :binary="true"
                 :modelValue="form.sort"
                 @update:modelValue="
-                  (v: boolean) => updateDataProp(index, v, 'sort')
+                  (v: boolean) => updateDataProp(index, v, 'sort', 'column')
                 "
               />
             </div>
@@ -108,7 +110,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['update-data-prop', 'add-column', 'remove-column'])
 
-const updateDataProp = (index: number, value: unknown, column: string) => {
-  emit('update-data-prop', index, value, column)
+const updateDataProp = (
+  index: number,
+  value: unknown,
+  column: string,
+  key: string
+) => {
+  emit('update-data-prop', index, value, column, key)
 }
 </script>

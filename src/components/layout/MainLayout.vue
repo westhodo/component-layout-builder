@@ -264,48 +264,69 @@ const updateSingleProp = ({
 const updateDataProp = (
   index: number,
   value: string | boolean,
-  column: string | number
+  column: string | number,
+  key: string
 ) => {
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
 
-  if (activeNode && Array.isArray(activeNode.props.columns)) {
-    const targetProp = activeNode.props?.columns[index]
+  if (activeNode && Array.isArray(activeNode.props[key])) {
+    const targetProp = activeNode.props?.[key][index]
     if (!targetProp) return
     targetProp[column] = value
   }
 }
 
-const addColumns = (index: number) => {
-  const activeNode = components.value.find(
-    (v) => v.id === selectedItem.value?.id
-  )
-  if (activeNode) {
-    const newColumn = {
-      key: Math.random().toString(36).slice(2),
-      label: 'column',
-      width: '',
-      sort: false
-    }
-
-    if (Array.isArray(activeNode.props.columns)) {
-      if (index === -1) {
-        activeNode.props.columns.push(newColumn)
-      } else {
-        activeNode.props.columns.splice(index + 1, 0, newColumn)
+const createItemByKey = (key: string) => {
+  switch (key) {
+    case 'column':
+      return {
+        key: crypto.randomUUID(),
+        label: 'column',
+        width: '',
+        sort: false
       }
-    }
+
+    case 'tabData':
+      return {
+        value: crypto.randomUUID(),
+        title: 'Title',
+        content: ''
+      }
+
+    default:
+      return null
   }
 }
 
-const removeColumns = (index: number) => {
+const addColumns = (key: string, index: number) => {
   const activeNode = components.value.find(
     (v) => v.id === selectedItem.value?.id
   )
-  if (activeNode) {
-    activeNode.props.columns ?? [].splice(index, 1)
-  }
+  if (!activeNode) return
+
+  const target = activeNode.props[key]
+  if (!Array.isArray(target)) return
+
+  const newItem = createItemByKey(key)
+  if (!newItem) return
+
+  const insertIndex = index === -1 ? target.length : index + 1
+  target.splice(insertIndex, 0, newItem)
+}
+
+const removeColumns = (key: string, index: number) => {
+  const activeNode = components.value.find(
+    (v) => v.id === selectedItem.value?.id
+  )
+  if (!activeNode) return
+
+  const target = activeNode.props[key]
+  if (!Array.isArray(target)) return
+  if (index < 0 || index >= target.length) return
+
+  target.splice(index, 1)
 }
 
 const handleTool = (target: string) => {

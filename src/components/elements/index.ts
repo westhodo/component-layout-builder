@@ -11,6 +11,7 @@ import ElTextarea from './ElTextarea.vue'
 import ElToggleSwitch from './ElToggleSwitch.vue'
 import ElDataTable from './ElDataTable.vue'
 import ElPaginator from './ElPaginator.vue'
+import ElAccordion from './ElAccordion.vue'
 
 export const componentRegistry = {
   Layer: {
@@ -375,6 +376,28 @@ export const componentRegistry = {
         value: 'multiple',
         option: ['multiple', 'single']
       }
+    })
+  },
+  Accordion: {
+    component: ElAccordion,
+    defaultProps: () => ({
+      tabData: [
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        },
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        },
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        }
+      ]
     })
   }
 } as const
