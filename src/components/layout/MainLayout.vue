@@ -29,10 +29,12 @@
           :active="node.active"
           :resizable="node.resizable"
           @click="handleClick(node)"
+          @drag="handleClick(node)"
           @keyup.esc="handleDel(index)"
           @update:x="(val: any) => updatePotision(node.id, { x: val })"
           @update:y="(val: any) => updatePotision(node.id, { y: val })"
           :grid="grid"
+          :style="{ zIndex: node.zIndex }"
         >
           <div class="h-full w-full overflow-hidden p-1">
             <component :is="node.component" v-bind="node.props" />
@@ -106,6 +108,7 @@ interface DragItem {
   h?: number
   active: boolean
   resizable?: boolean
+  zIndex?: number
 }
 
 const components = ref<DragItem[]>([])
@@ -119,6 +122,7 @@ const isEdit = ref(true)
 const currentActive = ref(false)
 const colorPaletteRef = ref()
 const customColor = ref('')
+const zIndexCount = ref(0)
 
 const template = reactive([
   {
@@ -204,7 +208,10 @@ const handleMenuClick = (menu: { label: ComponentKey }) => {
 
 const handleClick = (node: DragItem) => {
   selectedItem.value = node
+  components.value.forEach((item) => (item.active = false))
   selectedItem.value.active = true
+  zIndexCount.value += 1
+  selectedItem.value.zIndex = zIndexCount.value
 }
 
 const handleClear = () => {
