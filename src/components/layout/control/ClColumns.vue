@@ -33,7 +33,7 @@
                       index,
                       (e.target as HTMLInputElement).value,
                       'label',
-                      'column'
+                      'columns'
                     )
                 "
               />
@@ -51,7 +51,7 @@
                       index,
                       (e.target as HTMLInputElement).value,
                       'width',
-                      'column'
+                      'columns'
                     )
                 "
               />
@@ -59,7 +59,7 @@
                 :binary="true"
                 :modelValue="form.sort"
                 @update:modelValue="
-                  (v: boolean) => updateDataProp(index, v, 'sort', 'column')
+                  (v: boolean) => updateDataProp(index, v, 'sort', 'columns')
                 "
               />
             </div>

@@ -34,7 +34,7 @@
           @update:y="(val: any) => updatePotision(node.id, { y: val })"
           :grid="grid"
         >
-          <div class="h-full w-full overflow-hidden">
+          <div class="h-full w-full overflow-hidden p-1">
             <component :is="node.component" v-bind="node.props" />
           </div>
         </Draggable>
@@ -125,9 +125,11 @@ const template = reactive([
     type: 'button',
     event: 'view',
     icon: computed(() =>
-      !isEdit.value ? 'ic:twotone-mode-edit' : 'ic:twotone-edit-off'
+      !isEdit.value
+        ? 'fluent:keyboard-layout-resize-20-filled'
+        : 'ri:cursor-fill'
     ),
-    tooltip: computed(() => (!isEdit.value ? 'Edit' : 'View'))
+    tooltip: computed(() => (!isEdit.value ? 'Item Resize' : 'Item Move'))
   },
   {
     type: 'button',
@@ -271,10 +273,12 @@ const updateDataProp = (
     (v) => v.id === selectedItem.value?.id
   )
 
-  if (activeNode && Array.isArray(activeNode.props[key])) {
-    const targetProp = activeNode.props?.[key][index]
+  if (activeNode) {
+    const targetArray = activeNode.props?.[key] as unknown[]
+    const targetProp = targetArray?.[index]
+
     if (!targetProp) return
-    targetProp[column] = value
+    ;(targetProp as Record<string | number, unknown>)[column] = value
   }
 }
 

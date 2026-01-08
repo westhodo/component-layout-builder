@@ -43,10 +43,9 @@
           style="font-size: 14px"
           auto-resize
           rows="4"
-          :value="val.value"
+          :value="String(val.value)"
           @input="(e) => updateProp(key, (e.target as HTMLInputElement).value)"
         />
-
         <Select
           v-if="val.type === 'select'"
           class="w-full text-sm"
