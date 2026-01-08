@@ -14,6 +14,7 @@ import ElPaginator from './ElPaginator.vue'
 import ElAccordion from './ElAccordion.vue'
 import ElDivider from './ElDivider.vue'
 import ElPanel from './ElPanel.vue'
+import ElTabs from './ElTabs.vue'
 
 export const componentRegistry = {
   Layer: {
@@ -431,6 +432,28 @@ export const componentRegistry = {
     defaultProps: () => ({
       header: { type: 'input', value: 'header' },
       text: { type: 'textarea', value: '' }
+    })
+  },
+  Tabs: {
+    component: ElTabs,
+    defaultProps: () => ({
+      tabData: [
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        },
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        },
+        {
+          title: 'Title',
+          content: 'Content',
+          value: Math.random().toString(36).slice(2)
+        }
+      ]
     })
   }
 } as const
