@@ -19,7 +19,7 @@
         @click.self="handleClear"
       >
         <Draggable
-          :class="{ 'view-mode': !isEdit }"
+          :class="{ 'border-0': !isEdit }"
           v-for="(node, index) in components"
           :key="node.id"
           :x="node.x"
@@ -29,6 +29,7 @@
           :active="node.active"
           :resizable="node.resizable"
           @click="handleClick(node)"
+          @dblclick="handleFrameTop"
           @drag="handleClick(node)"
           @keyup.esc="handleDel(index)"
           @update:x="(val: any) => updatePotision(node.id, { x: val })"
@@ -210,6 +211,11 @@ const handleClick = (node: DragItem) => {
   selectedItem.value = node
   components.value.forEach((item) => (item.active = false))
   selectedItem.value.active = true
+}
+
+const handleFrameTop = () => {
+  if (!selectedItem.value) return
+
   zIndexCount.value += 1
   selectedItem.value.zIndex = zIndexCount.value
 }
@@ -364,9 +370,3 @@ const setGlobalPrimaryColor = (color: string) => {
 
 defineExpose({ currentActive })
 </script>
-
-<style lang="scss" scoped>
-.view-mode {
-  border: none;
-}
-</style>
