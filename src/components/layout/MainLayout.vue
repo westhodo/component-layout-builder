@@ -19,7 +19,7 @@
         @click.self="handleClear"
       >
         <Draggable
-          :class="{ 'border-0': !isEdit }"
+          :class="{ 'border-0!': !isEdit }"
           v-for="(node, index) in components"
           :key="node.id"
           :x="node.x"
