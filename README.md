@@ -42,19 +42,20 @@
 - **Undo / Redo**
   - Drag, Resize, Props 변경 이력을 Command 패턴 또는 History Stack으로 관리
   - 상태 스냅샷이 아닌 Action 단위 기록을 목표로 설계 예정
-
 - **Component Grouping**
   - 다중 선택 후 그룹화
   - 그룹을 하나의 레이어로 관리하여 이동 / 리사이즈 동기화
   - 내부 컴포넌트는 상대 좌표 기반으로 유지
-
 - **Layer Hierarchy**
   - Layer → Component 트리 구조
   - 부모 레이어 이동 시 자식 컴포넌트 동기화
-
 - **Canvas Zoom & Pan**
   - 마우스 휠 기반 화면 확대 / 축소
   - Pan 상태에서도 Drag & Resize 정확도 유지
   - 실제 좌표와 화면 좌표를 분리한 좌표계 관리
+- **Responsive & Mobile Consideration**
+  - 모바일 환경을 고려한 Canvas 인터랙션 재설계
+  - Touch 기반 Drag / Resize / Select 동작 분리
+  - 화면 크기에 따른 UI 패널 레이아웃 재구성 검토
 
-이 기능들은 핵심 구조 안정화 이후 단계적으로 확장할 계획입니다.
+이 기능들은 **핵심 구조 안정화 이후** 단계적으로 확장할 계획입니다.
