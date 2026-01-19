@@ -25,7 +25,7 @@
 - 컴포넌트 props 실시간 편집
 - PrimeVue / Custom Component 공통 처리
 - 레이아웃 저장 / 불러오기
-- 컴포넌트 추가 및 삭제 (ESC 키로 컴포넌트 삭제)
+- 컴포넌트 추가 및 삭제 (Delete, ⌘ + Backspace 컴포넌트 삭제)
 
 ---
 
