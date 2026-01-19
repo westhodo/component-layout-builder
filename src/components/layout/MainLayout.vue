@@ -230,7 +230,11 @@ onUnmounted(() => {
 })
 
 const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && selectedItem.value) {
+  if (!selectedItem.value) return
+
+  const isDeleteKey = e.key === 'Delete' || (e.key === 'Backspace' && e.metaKey)
+
+  if (isDeleteKey) {
     const index = components.value.findIndex(
       (item) => item.id === selectedItem.value?.id
     )
