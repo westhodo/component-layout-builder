@@ -110,14 +110,14 @@ export const component = [
         icon: 'ic:outline-grid-on'
       }
     ]
-  },
-  {
-    title: 'Menu',
-    children: [
-      {
-        label: 'Breadcrumb',
-        icon: 'material-symbols:steppers'
-      }
-    ]
   }
+  // {
+  //   title: 'Menu',
+  //   children: [
+  //     {
+  //       label: 'Breadcrumb',
+  //       icon: 'material-symbols:steppers'
+  //     }
+  //   ]
+  // }
 ]

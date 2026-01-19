@@ -4,7 +4,6 @@
   <div class="h-screen w-full overflow-auto">
     <div
       class="h-full w-full"
-      @wheel="onWheel"
       :style="{
         transform: `scale(${zoom})`,
         transformOrigin: 'top left'
@@ -20,7 +19,7 @@
       >
         <Draggable
           :class="{ 'border-0!': !isEdit }"
-          v-for="(node, index) in components"
+          v-for="node in components"
           :key="node.id"
           :x="node.x"
           :y="node.y"
@@ -31,7 +30,6 @@
           @click="handleClick(node)"
           @dblclick="handleFrameTop"
           @drag="handleClick(node)"
-          @keyup.esc="handleDel(index)"
           @update:x="(val: any) => updatePotision(node.id, { x: val })"
           @update:y="(val: any) => updatePotision(node.id, { y: val })"
           :grid="grid"
@@ -94,24 +92,45 @@
   </Popover>
 </template>
 <script setup lang="ts">
-import { computed, markRaw, reactive, ref, watch, type Component } from 'vue'
+import {
+  computed,
+  markRaw,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  watch,
+  type Component
+} from 'vue'
 import Draggable from 'draggable-resizable-vue3'
 import { componentRegistry, type ComponentKey } from '../elements'
 import { colorPalette } from '@/constants/layout'
+import { debounce } from 'lodash'
 
 interface DragItem {
   id: string
+  componentKey: ComponentKey
   component: Component
   props: Record<string, unknown>
-  x?: number
-  y?: number
+  x: number
+  y: number
   w?: number
   h?: number
   active: boolean
-  resizable?: boolean
+  resizable: boolean
   zIndex?: number
 }
 
+interface DragItemSchema {
+  id: string
+  componentKey: ComponentKey
+  props: Record<string, unknown>
+  x: number
+  y: number
+  w?: number
+  h?: number
+  zIndex?: number
+}
 const components = ref<DragItem[]>([])
 const zoom = ref(1)
 const selectedColor = ref<number | null>(0)
@@ -136,24 +155,24 @@ const template = reactive([
     ),
     tooltip: computed(() => (!isEdit.value ? 'Item Resize' : 'Item Move'))
   },
-  {
-    type: 'button',
-    event: 'zoomin',
-    icon: 'solar:magnifer-zoom-in-linear',
-    tooltip: 'Zomm In'
-  },
-  {
-    type: 'button',
-    event: 'zoomout',
-    icon: 'solar:magnifer-zoom-out-linear',
-    tooltip: 'Zomm Out'
-  },
-  {
-    type: 'button',
-    event: 'zoomreset',
-    icon: 'solar:refresh-bold',
-    tooltip: 'Zomm Reset'
-  },
+  // {
+  //   type: 'button',
+  //   event: 'zoomin',
+  //   icon: 'solar:magnifer-zoom-in-linear',
+  //   tooltip: 'Zomm In'
+  // },
+  // {
+  //   type: 'button',
+  //   event: 'zoomout',
+  //   icon: 'solar:magnifer-zoom-out-linear',
+  //   tooltip: 'Zomm Out'
+  // },
+  // {
+  //   type: 'button',
+  //   event: 'zoomreset',
+  //   icon: 'solar:refresh-bold',
+  //   tooltip: 'Zomm Reset'
+  // },
   {
     type: 'button',
     event: 'colorchange',
@@ -166,6 +185,10 @@ const template = reactive([
     tooltip: 'Switch Theme'
   }
 ])
+
+const saveLayout = debounce(() => {
+  localStorage.setItem('layout', JSON.stringify(setItemSave(components.value)))
+}, 300)
 
 watch(isEdit, (val) => {
   components.value.forEach((item) => (item.resizable = val))
@@ -185,26 +208,77 @@ watch(customColor, (val) => {
   selectedColor.value = null
 })
 
-const onWheel = (event: {
-  ctrlKey: unknown
-  preventDefault: () => void
-  y: number
-}) => {
-  if (!event.ctrlKey) return
-  event.preventDefault()
-  event.y < 0 ? zoomIn() : zoomOut()
+watch(components, saveLayout, { deep: true })
+
+onMounted(() => {
+  try {
+    const raw = localStorage.getItem('layout')
+    if (!raw) return
+    components.value = getItemSave(JSON.parse(raw))
+  } catch (e) {
+    console.warn('layout restore failed', e)
+    localStorage.removeItem('layout')
+  }
+})
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
+})
+
+const onKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && selectedItem.value) {
+    const index = components.value.findIndex(
+      (item) => item.id === selectedItem.value?.id
+    )
+    if (index !== -1) {
+      components.value.splice(index, 1)
+    }
+  }
 }
 
 const zoomIn = () => (zoom.value += 0.1)
 const zoomOut = () => (zoom.value = Math.max(0.1, zoom.value - 0.1))
 const resetZoom = () => (zoom.value = 1)
 
-const handleMenuClick = (menu: { label: ComponentKey }) => {
-  const entry = componentRegistry[menu.label]
-  const Comp = entry.component
-  const props = entry.defaultProps()
+const setItemSave = (nodes: DragItem[]): DragItemSchema[] => {
+  return nodes.map((node) => ({
+    id: node.id,
+    componentKey: node.componentKey,
+    props: node.props,
+    x: node.x,
+    y: node.y,
+    w: node.w,
+    h: node.h,
+    zIndex: node.zIndex
+  }))
+}
 
-  handleAddItem(Comp, props)
+const getItemSave = (schemas: DragItemSchema[]): DragItem[] => {
+  return schemas.map((schema) => {
+    const entry = componentRegistry[schema.componentKey]
+
+    return {
+      id: schema.id,
+      componentKey: schema.componentKey,
+      component: markRaw(entry.component),
+      props: reactive(schema.props),
+      x: schema.x,
+      y: schema.y,
+      w: schema.w,
+      h: schema.h,
+      zIndex: schema.zIndex,
+      active: false,
+      resizable: isEdit.value
+    }
+  })
+}
+
+const handleMenuClick = (menu: { label: ComponentKey }) => {
+  handleAddItem(menu.label)
 }
 
 const handleClick = (node: DragItem) => {
@@ -225,23 +299,20 @@ const handleClear = () => {
   selectedItem.value.active = false
 }
 
-const handleAddItem = (
-  component: Component | string,
-  props: Record<string, unknown>
-) => {
+const handleAddItem = (key: ComponentKey) => {
+  const entry = componentRegistry[key]
+
   components.value.push({
-    id: Math.random().toString(36).slice(2),
-    component: markRaw(component as Component),
-    props: reactive(props),
+    id: crypto.randomUUID(),
+    componentKey: key,
+    component: markRaw(entry.component),
+    props: reactive(entry.defaultProps()),
     x: 500,
     y: 200,
     active: false,
-    resizable: isEdit.value
+    resizable: isEdit.value,
+    zIndex: ++zIndexCount.value
   })
-}
-
-const handleDel = (index: number) => {
-  components.value.splice(index, 1)
 }
 
 const updatePotision = (id: string, patch: { x?: number; y?: number }) => {
